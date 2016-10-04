@@ -1,0 +1,12 @@
+.*
+*.pyc
+local_settings.py
+*.log
+!test*.html
+files/success/
+files/error/
+files/not_proc/
+files/phone_update/
+files/mail_upload/
+reports/*
+deps/
