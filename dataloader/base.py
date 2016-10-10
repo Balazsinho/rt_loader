@@ -2,6 +2,7 @@
 
 import pymssql
 from processors.field_map import Fields
+import settings
 
 NULL = None
 
@@ -16,8 +17,9 @@ class DataLoaderBase(object):
     NYILV_DB = 'Nyilvantarto'
     LESZ_DB = 'Leszereles'
 
-    def __init__(self, logger, db):
+    def __init__(self, logger):
         self.logger = logger
+        db = settings.GYURI_DB
         self._server = db['server']
         self._port = db['port']
         self._user = db['user']

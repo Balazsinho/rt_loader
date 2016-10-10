@@ -45,6 +45,26 @@ EMAIL_ACCS = {
     }
 }
 
+# =============================================================================
+# Loader configuration
+# =============================================================================
+
+# Classes
+LESZERELES = 'Leszereles'
+NYILVANTARTO = 'Nyilvantarto'
+NEWDB = 'NewDb'
+
+# Config
+LOADERS = {
+    'info': (NEWDB, NYILVANTARTO, LESZERELES),
+    'munka': (NEWDB, NYILVANTARTO, LESZERELES),
+    'fileupload': (NEWDB, NYILVANTARTO, LESZERELES),
+}
+
+# =============================================================================
+# Logging configuration
+# =============================================================================
+
 LOGLEVEL = logging.DEBUG if DEBUG else logging.INFO
 LOGGING_CONF = {
     'version': 1,

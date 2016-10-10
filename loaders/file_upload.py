@@ -9,6 +9,8 @@ from dataloader.new_db import NewDb
 
 from munka import MunkaLoader
 
+from settings import LOADERS
+
 
 class FileUpload(MunkaLoader):
 
@@ -20,8 +22,5 @@ class FileUpload(MunkaLoader):
         self.email_acc = settings.MAIL_UPLOAD_DIR
         self.downloader = FileLoader(self.logger)
         self.parser = MailParser(self.logger)
-        self.dataloaders = (
-            Nyilvantarto(self.logger, settings.GYURI_DB),
-            Leszereles(self.logger, settings.GYURI_DB),
-            NewDb(self.logger),
-        )
+        self.dataloaders = [globals()[loader_cls](self.logger)
+                            for loader_cls in LOADERS['fileupload']]

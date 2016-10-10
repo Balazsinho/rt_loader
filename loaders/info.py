@@ -3,8 +3,6 @@
 import os
 import codecs
 
-from unidecode import unidecode
-
 import settings
 from downloader.downloader import Downloader
 from processors.mailparser import MailParser
@@ -19,6 +17,8 @@ from base import LoaderBase
 from loaders.base import LoaderException
 from loaders.base import NotProcessableEmailError
 
+from settings import LOADERS
+
 
 class InfoLoader(LoaderBase):
 
@@ -26,11 +26,8 @@ class InfoLoader(LoaderBase):
         self.email_acc = settings.ACC_INFO
         self.downloader = Downloader(self.logger)
         self.parser = MailParser(self.logger)
-        self.dataloaders = (
-            Nyilvantarto(self.logger, settings.GYURI_DB),
-            Leszereles(self.logger, settings.GYURI_DB),
-            NewDb(self.logger),
-        )
+        self.dataloaders = [globals()[loader_cls](self.logger)
+                            for loader_cls in LOADERS['info']]
 
     def run(self, args):
         # Download the mails
