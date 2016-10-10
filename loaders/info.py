@@ -97,7 +97,7 @@ class InfoLoader(LoaderBase):
                             l.insert_mail_data(extracted_data, mail.html)
 
                         except DuplicateItemError as e:
-                            self.logger.warning(u'{}: {}'.format(mail.filename, e))
+                            self.logger.info(u'{}: {}'.format(mail.filename, e))
                             self._duplicate()
 
                         except Exception as e:

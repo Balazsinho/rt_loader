@@ -3,6 +3,7 @@
 import settings
 from downloader.fileloader import FileLoader
 from processors.mailparser import MailParser
+from dataloader.nyilvantarto import Nyilvantarto
 from dataloader.leszereles import Leszereles
 from dataloader.new_db import NewDb
 
@@ -20,7 +21,7 @@ class FileUpload(MunkaLoader):
         self.downloader = FileLoader(self.logger)
         self.parser = MailParser(self.logger)
         self.dataloaders = (
-            # Nyilvantarto(self.logger, settings.GYURI_DB),
-            # Leszereles(self.logger, settings.GYURI_DB),
-            # NewDb(self.logger),
+            Nyilvantarto(self.logger, settings.GYURI_DB),
+            Leszereles(self.logger, settings.GYURI_DB),
+            NewDb(self.logger),
         )

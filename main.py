@@ -13,10 +13,10 @@ from loaders.file_upload import FileUpload
 
 
 LOADERS = (
-    #PhoneUpdateLoader,
+    PhoneUpdateLoader,
     InfoLoader,
-    #MunkaLoader,
-    #FileUpload,
+    MunkaLoader,
+    FileUpload,
 )
 
 
