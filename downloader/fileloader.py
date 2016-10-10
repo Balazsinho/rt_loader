@@ -5,6 +5,8 @@ import codecs
 import datetime
 from utils import create_and_list_dir
 
+from .mail import Mail
+
 
 class FileLoader(object):
 
@@ -15,12 +17,11 @@ class FileLoader(object):
 
     def fetch_mails(self, directory):
         msg_files = create_and_list_dir(self.logger, directory)
-        msgs = [codecs.open(f).read() for f in msg_files]
+        msgs = (codecs.open(f).read() for f in msg_files)
 
-        return [('MANUAL_{}_{}.html'.format(self._mail_prefix, idx),
-                 mail_content, idx)
-                for idx, mail_content in enumerate(msgs)]
+        for idx, msg in enumerate(msgs):
+            yield Mail(msg, idx)
 
     def delete_mails(self, directory, idxs):
         msg_files = create_and_list_dir(self.logger, directory)
-        #[os.remove(f) for idx, f in enumerate(msg_files) if idx in idxs]
+        [os.remove(f) for idx, f in enumerate(msg_files) if idx in idxs]

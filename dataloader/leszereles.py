@@ -8,6 +8,9 @@ from processors.field_map import Fields
 
 class Leszereles(DataLoaderBase):
 
+    class AlreadyExistsError(Exception):
+        pass
+
     def _post_init(self):
         self._db = self.LESZ_DB
 
@@ -15,7 +18,10 @@ class Leszereles(DataLoaderBase):
         if Fields.DEVICES in data:
             loc_id = self._get_loc_id(data)
             default_mech_id = self._get_default_mech_id()
-            client_id = self._insert_data(data, loc_id, default_mech_id)
+            try:
+                client_id = self._insert_data(data, loc_id, default_mech_id)
+            except self.AlreadyExistsError:
+                return None
             self._insert_devices(data, client_id)
             self._insert_mail_content(client_id, mail_content)
 
@@ -56,6 +62,9 @@ class Leszereles(DataLoaderBase):
                        "".format(data[Fields.MT_ID]))
         mt_count = cursor.fetchone()[0]
         mt_postfix = 'x' * mt_count
+
+        if mt_postfix:
+            raise self.AlreadyExistsError()
 
         try:
             params = (

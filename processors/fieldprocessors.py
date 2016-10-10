@@ -342,3 +342,24 @@ def clean_name(processed_data):
     if 'ERROR' in name1 and name2 is not None:
         result = {Fields.NAME1: name2}
     return result
+
+
+def clean_task_type(processed_data):
+    """
+    Creates a task type list and cleans multiple task types.
+    """
+    def _clean(task_type):
+        task_type = task_type.strip()
+        return re.sub(u'Alvállalkozó\s?\-\s?', u'', task_type)
+
+    task_type = processed_data[Fields.TASK_TYPE]
+    result = {}
+    tasks = re.findall('[HL]-.+?(?=[HL]-|$)', task_type)
+    if tasks:
+        tasks = map(_clean, tasks)
+        seen = set()
+        tasks = [t for t in tasks if not (t in seen or seen.add(t))]
+        if len(tasks) > 1:
+            result[Fields.TASK_TYPE_LIST] = tasks
+        result[Fields.TASK_TYPE] = ' '.join(tasks)
+    return result

@@ -57,7 +57,7 @@ class TestMailParsing(unittest.TestCase):
             'remarks': '',
             'street': u'Fogarasi út',
             'task_type': (u'L-Szolgáltatás üzembehelyezés '
-                          u'(Alvállalkozó - Optika)'),
+                          u'(Optika)'),
             'ticket_id': u'61728463-1343',
             'title': None,
             'zip': u'1148'
@@ -277,8 +277,9 @@ class TestMailParsing(unittest.TestCase):
             'req_type': u'Mûszaki Hozzáférés - [FEL] - GPON_OPTIKA',
             'street': u'Balzac utca',
             'task_type': (u'L-Vonalépítés (Optikai hálózat) [SPA] '
-                          u'L-Helyszíni létesítés (Alvállalkozó'
-                          u' - GPON) [SPA]'),
+                          u'L-Helyszíni létesítés (GPON) [SPA]'),
+            'task_type_list': [u'L-Vonalépítés (Optikai hálózat) [SPA]',
+                               u'L-Helyszíni létesítés (GPON) [SPA]'],
             'ticket_id': u'62059132-322',
             'title': u'Szerelési lap',
             'zip': u'1136'
@@ -502,7 +503,7 @@ class TestMailParsing(unittest.TestCase):
             'req_type': u'Mûszaki Hozzáférés - [FEL] - KOAX',
             'street': u'Madár utca',
             'task_type': (u'L-Helyszíni áthelyezés '
-                          u'(Alvállalkozó - KOAX) [SPA]'),
+                          u'(KOAX) [SPA]'),
             'ticket_id': u'61974667-745',
             'title': u'Szerelési lap',
             'zip': u'2083'
@@ -557,6 +558,8 @@ class TestMailParsing(unittest.TestCase):
             'street': u'Visegrádi utca',
             'task_type': (u'L-Vonalépítés - Multiservice Point '
                           u'[SPA] L-MDF - Multiservice Point [SPA]'),
+            'task_type_list': [u'L-Vonalépítés - Multiservice Point [SPA]',
+                               u'L-MDF - Multiservice Point [SPA]'],
             'ticket_id': u'62002628-452',
             'title': u'Szerelési lap',
             'zip': u'1132'
@@ -606,6 +609,8 @@ class TestMailParsing(unittest.TestCase):
             'street': u'Visegrádi utca',
             'task_type': (u'L-Vonalépítés - Multiservice Point '
                           u'[SPA] L-MDF - Multiservice Point [SPA]'),
+            'task_type_list': [u'L-Vonalépítés - Multiservice Point [SPA]',
+                               u'L-MDF - Multiservice Point [SPA]'],
             'ticket_id': u'62002879-423',
             'title': u'Szerelési lap',
             'zip': u'1132'
@@ -752,6 +757,9 @@ class TestMailParsing(unittest.TestCase):
         self.assertDictEqual(output, expected)
 
     def test_file25(self):
+        """
+        testing task type duplicate filtering
+        """
         f = self._get_mail_file('test25.html')
         output = self.parser.parse(f)
         # PPrinter(indent=0).pprint(output)
@@ -763,8 +771,9 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Mikrofiber Marketing Kft',
             'phone1': u'+36706135717',
             'street': u'Rózsa utca',
-            'task_type': (u'L-Vonal + NDSL kiépítése L-Vonal + '
-                          u'NDSL kiépítése L-MDF bekötés NAKED'),
+            'task_type': (u'L-Vonal + NDSL kiépítése L-MDF bekötés NAKED'),
+            'task_type_list': [u'L-Vonal + NDSL kiépítése',
+                               u'L-MDF bekötés NAKED'],
             'ticket_id': u'62761843-729',
             'title': u'Munkaelrendelés',
             'zip': u'2000'
@@ -797,6 +806,9 @@ class TestMailParsing(unittest.TestCase):
             'street': u'Széchenyi István tér',
             'task_type': (u'L-Vonalépítés [SPA] L-MDF Felszerelés (Host) '
                           u'[SPA] L-Helyszíni létesítés (REZ) [SPA]'),
+            'task_type_list': [u'L-Vonalépítés [SPA]',
+                               u'L-MDF Felszerelés (Host) [SPA]',
+                               u'L-Helyszíni létesítés (REZ) [SPA]'],
             'ticket_id': u'62913946-477',
             'title': u'Szerelési lap',
             'zip': u'2000'
@@ -858,7 +870,7 @@ class TestMailParsing(unittest.TestCase):
             'remarks': (u'EGYSÉGES EGYEDI ELÕFIZETÕI SZERZÕDÉS/SZERZÕDÉS'
                         u'MÓDOSÍTÁS MELLÉKLETE EGYÉNI ELÕFIZETÕ RÉSZÉRE'),
             'street': u'Hajós Alfréd sétány',
-            'task_type': u'L-Szolgáltatás üzembehelyezés (Alvállalkozó - Réz)',
+            'task_type': u'L-Szolgáltatás üzembehelyezés (Réz)',
             'ticket_id': u'63072441-1014',
             'title': u'Munkaelrendelés',
             'zip': u'1007'
@@ -887,6 +899,37 @@ class TestMailParsing(unittest.TestCase):
             'street': u'Vadász utca',
             'task_type': u'L-MDF - Multiservice Point [SPA]',
             'ticket_id': u'63313981-544',
+            'title': u'Szerelési lap',
+            'zip': u'5091'
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file30(self):
+        """test processing of multiple tasks with no space for separator"""
+        f = self._get_mail_file('test30.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'Tószeg 5091 Vadvirág 1/B.',
+            'agreed_time': u'Nincs, vagy lejárt!',
+            'city': u'Tószeg',
+            'date_created': u'2016-09-12 14:42:28',
+            'house_num': u'1/B',
+            'mt_id': u'825295282',
+            'name1': u'Jakoda-Tóth Andrea',
+            'order_num': u'34393836303438373230383432303930',
+            'oss_id': u'825295282',
+            'phone1': u'205596925',
+            'phone2': u'56557198',
+            'remarks': '',
+            'req_type': u'Műszaki Hozzáférés - [FEL] - GPON_OPTIKA',
+            'street': u'Vadvirág',
+            'task_type': (u'L-Vonalépítés (Optikai hálózat) [SPA] L-Helyszíni'
+                          u' létesítés (GPON) [SPA]'),
+            'task_type_list': [u'L-Vonalépítés (Optikai hálózat) [SPA]',
+                               u'L-Helyszíni létesítés (GPON) [SPA]'],
+            'ticket_id': u'62945323-553',
             'title': u'Szerelési lap',
             'zip': u'5091'
         }

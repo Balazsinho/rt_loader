@@ -1,18 +1,20 @@
 import re
-import datetime
+from datetime import datetime
 
 
 class Mail(object):
 
     ENCODING_META = '<meta charset="utf-8"/>'
-    FN_PREFIX = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
+    FN_PREFIX = datetime.now().strftime('%Y%m%d_%H%M%S')
 
-    def __init__(self, raw_lines, idx):
-        self.raw = raw_lines
+    def __init__(self, raw, idx):
+        self.raw = raw
         self.idx = idx
         self.filename = '{}_{}.html'.format(self.FN_PREFIX, self.idx)
         self._from = None
-        self._html = None
+        self._date = None
+        if type(raw) in (unicode, str):
+            self._html = raw
 
     @property
     def html(self):
@@ -21,7 +23,16 @@ class Mail(object):
 
     @property
     def mail_from(self):
-        return self._from or self._parse_from()
+        if not self._from:
+            self._from = self._extract_line('from:', 'From:.*<(.*)>')
+        return self._from
+
+    @property
+    def mail_date(self):
+        if not self._date:
+            d = self._extract_line('date:')
+            self._date = datetime.strptime(d, '%a, %d %b %Y %H:%M:%S +0200')
+        return self._date
 
     def _parse_html(self):
         in_html = False
@@ -43,15 +54,13 @@ class Mail(object):
         self._html = self._fix_text(html_assembled).encode('utf-8')
         return self.ENCODING_META + self._html if self._html else ''
 
-    def _parse_from(self):
+    def _extract_line(self, line_start, search_re=None):
         for line in self.raw:
-            if line.lower().startswith('from'):
-                w_brackets = re.search('From:.*<(.*)>', line)
-                if w_brackets:
-                    self._from = w_brackets.group(1)
+            if line.lower().startswith(line_start):
+                if search_re and re.search(search_re, line, re.I):
+                    return re.search(search_re, line, re.I).group(1)
                 else:
-                    self._from = self._fix_text(line[5:].strip())
-                return self._from
+                    return self._fix_text(line[len(line_start):].strip())
 
         return None
 
