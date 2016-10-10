@@ -13,6 +13,8 @@ class Mail(object):
         self.filename = '{}_{}.html'.format(self.FN_PREFIX, self.idx)
         self._from = None
         self._date = None
+        self._html = None
+
         if type(raw) in (unicode, str):
             self._html = raw
 
