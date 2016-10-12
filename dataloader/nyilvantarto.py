@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import datetime
 from unidecode import unidecode
 
 from base import DataLoaderBase, NULL, DuplicateItemError
