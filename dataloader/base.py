@@ -29,7 +29,7 @@ class DataLoaderBase(object):
     def _post_init(self):
         pass
 
-    def insert_mail_data(self, data, mail_content):
+    def insert_mail_data(self, data, mail):
         raise NotImplementedError()
 
     def _connect_db(self, db, charset='UTF-8', as_dict=False):
