@@ -18,7 +18,7 @@ class NewDb(object):
         auth = base64.encodestring(settings.ROVIDTAV_AUTH).strip()
         auth_header = 'Basic {}'.format(auth)
         data['html'] = mail.html.decode('latin-1').replace(u'"', u'\\"')
-        data['mail_date'] = mail.mail_date
+        data['mail_date'] = str(mail.mail_date)
         req = urllib2.Request(url, json.dumps(data),
                               {'Content-Type': 'application/json'})
         req.add_header('Authorization', auth_header)
