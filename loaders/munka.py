@@ -86,7 +86,7 @@ class MunkaLoader(LoaderBase):
                         try:
                             self.logger.info(u'Feltolto futtatasa: {}'
                                              u''.format(l.__class__.__name__))
-                            l.insert_mail_data(extracted_data, mail.html)
+                            l.insert_mail_data(extracted_data, mail)
                             marked_for_delete_idxs.append(mail.idx)
 
                         except DuplicateItemError as e:
