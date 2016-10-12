@@ -16,7 +16,7 @@ class PhoneUpdateLoader(LoaderBase):
     def run(self, args):
         files_to_process = create_and_list_dir(self.logger,
                                                settings.PHONEUPD_DIR)
-        leszereles = Leszereles(self.logger, settings.GYURI_DB)
+        leszereles = Leszereles(self.logger)
 
         for f in files_to_process:
             workbook = xlrd.open_workbook(f)

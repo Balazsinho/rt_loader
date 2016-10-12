@@ -46,6 +46,7 @@ class TestMailParsing(unittest.TestCase):
     def test_file1(self):
         f = self._get_mail_file('test1.html').replace('<!-- o ignored -->', '')
         output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'1148 BUDAPEST Fogarasi út 57 FS em. 1 ajtó',
             'city': u'Budapest',
@@ -54,7 +55,7 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Fifo Kft.',
             'order_num': u'7264734',
             'phone1': u'+36309892944',
-            'remarks': '',
+            'remarks': u'Eredménykód: OK Előminősítés/kap.fogl sikeres',
             'street': u'Fogarasi út',
             'task_type': (u'L-Szolgáltatás üzembehelyezés '
                           u'(Optika)'),
@@ -178,6 +179,8 @@ class TestMailParsing(unittest.TestCase):
             'ki_id': u'1156290',
             'mt_id': u'888888888',
             'name1': u'DIANISKA KFT',
+            'remarks': (u'Leszerelés nem történt, a leszerelés '
+                        u'meghiúsulásának oka'),
             'phone1': u'309670566',
             'req_type': u'Műszaki Hozzáférés - [LESZ] - SATTV',
             'street': u'Hőforrás utca',
@@ -346,7 +349,7 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Nyilvános Állomás',
             'name2': u'Dénes György',
             'phone1': u'303914300',
-            'remarks': u'Leírás: Vonal hiba / vonala levezet /',
+            'remarks': u'Vonal hiba / vonala levezet /',
             'street': u'Kossuth Lajos utca',
             'task_type': u'H-Elõfizetõi vonalhiba elhárítás',
             'ticket_id': u'61965963',
@@ -771,6 +774,7 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Mikrofiber Marketing Kft',
             'phone1': u'+36706135717',
             'street': u'Rózsa utca',
+            'remarks': u'Eredménykód: OK Elõminõsítés/kap.fogl sikeres',
             'task_type': (u'L-Vonal + NDSL kiépítése L-MDF bekötés NAKED'),
             'task_type_list': [u'L-Vonal + NDSL kiépítése',
                                u'L-MDF bekötés NAKED'],
@@ -867,8 +871,7 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Magyar Úszó Szövetség',
             'order_num': u'7275914',
             'phone1': u'+36303386916',
-            'remarks': (u'EGYSÉGES EGYEDI ELÕFIZETÕI SZERZÕDÉS/SZERZÕDÉS'
-                        u'MÓDOSÍTÁS MELLÉKLETE EGYÉNI ELÕFIZETÕ RÉSZÉRE'),
+            'remarks': u'Eredménykód: OK Elõminõsítés/kap.fogl sikeres',
             'street': u'Hajós Alfréd sétány',
             'task_type': u'L-Szolgáltatás üzembehelyezés (Réz)',
             'ticket_id': u'63072441-1014',
@@ -932,6 +935,32 @@ class TestMailParsing(unittest.TestCase):
             'ticket_id': u'62945323-553',
             'title': u'Szerelési lap',
             'zip': u'5091'
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file31(self):
+        """new format again"""
+        f = self._get_mail_file('test31.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'7630 PÉCS Deák Ferenc utca 37',
+            'city': u'Pécs',
+            'house_num': u'37',
+            'mt_id': u'461998427',
+            'name1': u'Fruitica Kft.',
+            'order_num': u'7278011',
+            'phone1': u'+36204556932',
+            'remarks': u'Eredménykód: OK Előminősítés/kap.fogl sikeres',
+            'street': u'Deák Ferenc utca',
+            'task_type': (u'L-Szolgáltatás üzembehelyezés (Optika)'
+                          u' L-Vonalépítés (Optikai hálózat)'),
+            'task_type_list': [u'L-Szolgáltatás üzembehelyezés (Optika)',
+                               u'L-Vonalépítés (Optikai hálózat)'],
+            'ticket_id': u'63328472-2330',
+            'title': u'Munkaelrendelés',
+            'zip': u'7630'
         }
 
         self.assertDictEqual(output, expected)

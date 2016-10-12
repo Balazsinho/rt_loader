@@ -17,74 +17,63 @@ from field_const import Fields
 # ==========================================================================
 USABLE_FIELDS = [
 
-    # ======================================================================
-    # MUNKALAP - RÉGI FORMÁTUM
-    # ======================================================================
-    # ('Adószám', Fields.),
-    ('Az elofizetoi vegberendezes felszerelesenek a helye',
-     Fields.ADDR1, [fieldprocessors.address]),
-    ('EFP Megrendelesszam', Fields.EFP_NUM),
-    ('KI Igenyazonosito', Fields.KI_ID),
-    ('MT ugyfel-azonosito', Fields.MT_ID),
-    ('Igenytipus', Fields.REQ_TYPE),
-    ('Ertesitesi telefon', Fields.PHONE1),
-    ('Nev (csaladi és utonev)', Fields.NAME1),
-    ('WFMS jegyazonosito-Task Nr', Fields.TICKET_ID),
-    ('WFMS jegy letrejotte', Fields.DATE_CREATED),
-    ('Egyeztetett idopont', Fields.AGREED_TIME),
-    ('Feladat tipus', Fields.TASK_TYPE, ),
-    # [fieldprocessors.task_type]),
-
-    # ======================================================================
-    # HIBALAP - ÚJ FORMÁTUM
-    # ======================================================================
-    ('A szam', Fields.A_NUM),
-    ('Bejelentes tipusa', Fields.REQ_TYPE),
-    ('Hibaelharitasi hatarido [ora]', Fields.SLA_H),
     ('Hibajegy azonosito', Fields.TICKET_ID),
-    ('Ugyfel neve', Fields.NAME1),
-    ('Kapcsolattarto nev', Fields.NAME2),
-    ('Kapcsolattarto telefon', Fields.PHONE1),
-    ('MT ID', Fields.MT_ID),
-    ('TASK ID', Fields.TASK_ID),
-    ('Telepitesi cim', Fields.ADDR1,
-     [fieldprocessors.address]),
-    ('MT-azonosito', Fields.MT_ID),
-
-    # ======================================================================
-    # MUNKALAP - ÚJ FORMÁTUM
-    # ======================================================================
-    ('Egyeztetett idopont', Fields.AGREED_TIME),
-    ('Elofizeto neve', Fields.NAME1),
-    ('Igeny rogzites datuma', Fields.DATE_CREATED),
-    ('Igeny tipus', Fields.REQ_TYPE),
+    ('WFMS jegyazonosito-Task Nr', Fields.TICKET_ID),
     ('Jegyazonosito-Task Nr', Fields.TICKET_ID),
-    ('Kapcsolattarto neve', Fields.NAME1),
-    ('MT ugyfelazonosito', Fields.MT_ID),
-    ('Megrendelesszam', Fields.ORDER_NUM),
+    ('Jegy azonosito', Fields.TICKET_ID),
+
+    ('A szam', Fields.A_NUM),
     ('OSS ugyfelszam', Fields.OSS_ID),
-    ('Telefonszam', Fields.PHONE2),
+    ('KI Igenyazonosito', Fields.KI_ID),
+    ('TASK ID', Fields.TASK_ID),
+    ('EFP Megrendelesszam', Fields.EFP_NUM),
+    ('Megrendelesszam', Fields.ORDER_NUM),
+
+    ('WFMS jegy letrejotte', Fields.DATE_CREATED),
+    ('Igeny rogzites datuma', Fields.DATE_CREATED),
+    ('Egyeztetett idopont', Fields.AGREED_TIME),
+
+    ('Bejelentes tipusa', Fields.REQ_TYPE),
+    ('Igeny tipus', Fields.REQ_TYPE),
+    ('Igenytipus', Fields.REQ_TYPE),
+
+    ('Feladat tipus', Fields.TASK_TYPE),
+    ('Feladat', Fields.TASK_TYPE,),
+
+    ('Hibaelharitasi hatarido [ora]', Fields.SLA_H),
+    ('Feladat megjegyzes', Fields.REMARKS),
+    ('Leiras', Fields.REMARKS),
+
     ('Veteli hely', Fields.ADDR1,
      [fieldprocessors.address]),
     ('Letesitesi cime', Fields.ADDR1,
      [fieldprocessors.address]),
-    # ('Értesítési telefon (Egyéb)', Fields.),
-    # ('Értesítési telefon (Otthoni)', Fields.),
+    ('Felszerelesi cim', Fields.ADDR1,
+     [fieldprocessors.address]),
+    ('Telepitesi cim', Fields.ADDR1,
+     [fieldprocessors.address]),
+    ('Az elofizetoi vegberendezes felszerelesenek a helye',
+     Fields.ADDR1, [fieldprocessors.address]),
 
-    # ======================================================================
-    # MINDENFELE
-    # ======================================================================
-    ('Jegy azonosito', Fields.TICKET_ID),
-    ('Felszerelesi cim', Fields.ADDR1),
-    ('Ertesitesi szam', Fields.PHONE1),
-    ('Feladat', Fields.TASK_TYPE,),
-    # [fieldprocessors.task_type]),
-    ('Kapcsolasi szam', Fields.MT_ID),
-    ('Feladat megjegyzes', Fields.REMARKS),
-
-    ('Kapcsolattarto', Fields.PHONE1),
-    ('MT_ID', Fields.MT_ID),
     ('Nev (csaladi es utonev)', Fields.NAME1),
+    ('Kapcsolattarto neve', Fields.NAME1),
+    ('Ugyfel neve', Fields.NAME1),
+    ('Elofizeto neve', Fields.NAME1),
+    ('Nev (csaladi és utonev)', Fields.NAME1),
+    ('Kapcsolattarto nev', Fields.NAME2),
+
+    ('Ertesitesi szam', Fields.PHONE1),
+    ('Kapcsolattarto', Fields.PHONE1),
+    ('Kapcsolattarto telefon', Fields.PHONE1),
+    ('Ertesitesi telefon', Fields.PHONE1),
+    ('Telefonszam', Fields.PHONE2),
+
+    ('MT ugyfel-azonosito', Fields.MT_ID),
+    ('MT ugyfelazonosito', Fields.MT_ID),
+    ('Kapcsolasi szam', Fields.MT_ID),
+    ('MT ID', Fields.MT_ID),
+    ('MT_ID', Fields.MT_ID),
+    ('MT-azonosito', Fields.MT_ID),
 ]
 
 
@@ -96,9 +85,9 @@ USABLE_FIELDS = [
 # See fieldprocessors.py POSTPARSERS section for code
 
 _field_v = vars(Fields)
-for f in [v for v in _field_v if not v.startswith('_')]:
-    USABLE_FIELDS.append((_field_v[f], _field_v[f]))
-
+final_field_names = [v for v in _field_v if not v.startswith('_')]
+FINAL_FIELDS = [_field_v[f] for f in final_field_names]
+USABLE_FIELDS.extend([(f, f) for f in FINAL_FIELDS])
 
 NAME_MAP = dict([(f[0].decode('utf-8'), f[1]) for f in USABLE_FIELDS])
 PROCESSOR_MAP = dict([(f[1], f[2]) for f in USABLE_FIELDS if len(f) == 3])

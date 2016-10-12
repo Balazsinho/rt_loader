@@ -8,9 +8,9 @@ from downloader.downloader import Downloader
 from processors.mailparser import MailParser
 
 from dataloader.base import DuplicateItemError
-from dataloader.nyilvantarto import Nyilvantarto
-from dataloader.leszereles import Leszereles
-from dataloader.new_db import NewDb
+from dataloader.nyilvantarto import Nyilvantarto  # @UnusedImport
+from dataloader.leszereles import Leszereles  # @UnusedImport
+from dataloader.new_db import NewDb  # @UnusedImport
 from utils.pprinter import PPrinter
 
 from base import LoaderBase
@@ -91,7 +91,7 @@ class InfoLoader(LoaderBase):
                         try:
                             self.logger.info(u'Feltolto futtatasa: {}'
                                              u''.format(l.__class__.__name__))
-                            l.insert_mail_data(extracted_data, mail.html)
+                            l.insert_mail_data(extracted_data, mail)
 
                         except DuplicateItemError as e:
                             self.logger.info(u'{}: {}'.format(mail.filename, e))

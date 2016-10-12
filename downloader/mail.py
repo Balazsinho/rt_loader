@@ -32,8 +32,11 @@ class Mail(object):
     @property
     def mail_date(self):
         if not self._date:
-            d = self._extract_line('date:')
-            self._date = datetime.strptime(d, '%a, %d %b %Y %H:%M:%S +0200')
+            try:
+                d = self._extract_line('date:')
+                self._date = datetime.strptime(d, '%a, %d %b %Y %H:%M:%S +0200')
+            except Exception:
+                self._date = datetime.now()
         return self._date
 
     def _parse_html(self):

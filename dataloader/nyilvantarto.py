@@ -12,7 +12,7 @@ class Nyilvantarto(DataLoaderBase):
     def _post_init(self):
         self._db = self.NYILV_DB
 
-    def insert_mail_data(self, data, mail_content):
+    def insert_mail_data(self, data, mail):
         loc_id = self._get_loc_id(data)
         default_mech_id = self._get_default_mech_id()
         try:
@@ -21,8 +21,8 @@ class Nyilvantarto(DataLoaderBase):
             self.logger.error(e)
             client_type_id = None
         new_id = self._insert_data(data, loc_id, default_mech_id,
-                                   client_type_id)
-        self._insert_mail_content(new_id, mail_content)
+                                   client_type_id, mail.mail_date)
+        self._insert_mail_content(new_id, mail.html)
 
     def _get_client_type_id(self, data):
         conn = self._connect_db(self._db)
@@ -56,7 +56,7 @@ class Nyilvantarto(DataLoaderBase):
         return client_type_id
 
     def _insert_data(self, data, loc_id, default_mech_id,
-                     client_type_id):
+                     client_type_id, mail_date):
         stmt = ('INSERT dbo.Ugyfelek (uNev, MtAzon, u_tAzon, Utca, HazSzam,'
                 'Felvitel, Kiadva, Lezarva, u_szAzon, u_utAzon, uMegjegyzes,'
                 'JegyAzon) '
@@ -88,7 +88,7 @@ class Nyilvantarto(DataLoaderBase):
                 data[Fields.HOUSE_NUM] +
                 (' (BE {})'.format(data[Fields.COLLECTABLE_MONEY]) if
                  Fields.COLLECTABLE_MONEY in data else ''),
-                datetime.datetime.now(),
+                mail_date,
                 NULL,
                 NULL,
                 default_mech_id,

@@ -107,7 +107,7 @@ def task_type(field_name, task_type):
 # =============================================================================
 
 
-def _extract_col_adj_values(soup, header):
+def _extract_col_adj_values(soup, header, next_row_cell=None):
     """
     Extracts the key and value vertically (adjacent cells).
     Key is taken as a header, value is a list of values in the next rows after
@@ -115,16 +115,20 @@ def _extract_col_adj_values(soup, header):
     """
     extracted = []
     for td in soup.find_all('td'):
-        texts = td.find_all(text=True)
+        texts = filter(trash, td.find_all(text=True))
         if len(texts) == 1 and \
-                unidecode(texts[0].strip()) == header:
-            idx = td.parent.index(td)
-            next_tr = td.parent.next_sibling
+                unidecode(texts[0].strip().strip('":')) == header:
+            idx = next_row_cell or filter(lambda x: x.name == 'td',
+                                          td.parent.contents).index(td)
+            next_tr = td.parent.findNext('tr')
             while next_tr and next_tr.name == 'tr':
                 next_tr_cells = next_tr.find_all('td')
-                data = map(clean, next_tr_cells[idx].find_all(text=True))
-                extracted.append(data)
+                if len(next_tr_cells) < idx:
+                    break
+                data = filter(trash, map(clean, next_tr_cells[idx].find_all(text=True)))
+                extracted.append(' '.join(data))
                 next_tr = next_tr.next_sibling
+            break
     return extracted
 
 
@@ -177,23 +181,24 @@ def extract_address(soup, extracted_data):
 
 def extract_remark(soup, extracted_data):
     result = {}
-    cells = soup.find_all('td')
-    for idx, td in enumerate(cells):
-        if u'Megjegyzesek:' in [unidecode(c.strip())
-                                for c in td.find_all(text=True)]:
-            remarks_content = [re.sub('\s+', ' ', c.strip())
-                               for c in cells[idx+4].find_all(text=True)
-                               if not re.match('^\s*$', c)]
-            remarks_content = ' '.join(remarks_content)
-            result = {Fields.REMARKS: remarks_content}
-            break
+    # Triplets, first value is the word to look for,
+    # second value is the column in the next row to look
+    # third value is the exeptions if the result starts with, ignore all
+    words_to_seek = (
+        ['Leiras'],
+        ['Megjegyzesek', 3, ('IMDB', 'EGYSEGES EGYEDI')],
+        ['Megjegyzesek'],
+    )
 
-    if not result:
-        remarks = _extract_col_adj_values(soup, 'Leiras')
+    for lookup in words_to_seek:
+        word, col, exceptions = lookup + [None]*(3-len(lookup))
+        remarks = _extract_col_adj_values(soup, word, col)
         if remarks:
+            if exceptions and unidecode(remarks[0]).startswith(exceptions):
+                continue
             # We need only the first row (?)
-            # First cell of first row
-            result = {Fields.REMARKS: remarks[0][0]}
+            result = {Fields.REMARKS: remarks[0]}
+            break
 
     return result
 
@@ -202,13 +207,14 @@ def extract_task_type(soup, extracted_data):
     """
     Required for yet again some weird format where the task type and the value
     are in two separate rows in the first column
+    + another test case (test31.html)
     """
     result = {}
-    task = _extract_col_adj_values(soup, 'Feladat')
-    if task:
+    if extracted_data.get('Feladat', '').startswith('Egyeztetett'):
+        task = _extract_col_adj_values(soup, 'Feladat')
         # We need the first row only
         # First cell of the first row
-        result = {Fields.TASK_TYPE: task[0][0]}
+        result = {Fields.TASK_TYPE: task[0]}
 
     return result
 
@@ -309,12 +315,12 @@ def _extract_devices_method3(soup, extracted_data):
     """
     devices = []
 
-    method2_res = [v[0] for v in _extract_col_adj_values(soup, 'Vonalkod')]
+    method2_res = _extract_col_adj_values(soup, 'Vonalkod')
     if method2_res:
         serials = set()
         # ei = [v[0] if v else ''
         #       for v in _extract_col_adj_values(soup, 'Eszkozigeny')]
-        tipus = [v[0] for v in _extract_col_adj_values(soup, 'Tipus')]
+        tipus = _extract_col_adj_values(soup, 'Tipus')
         vonalkod = method2_res
         # cikkszam = _extract_col_adj_values(soup, 'Cikkszam')
 

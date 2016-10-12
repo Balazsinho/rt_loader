@@ -3,16 +3,14 @@
 import os
 import codecs
 
-from unidecode import unidecode
-
 import settings
 from downloader.downloader import Downloader
 from processors.mailparser import MailParser
 
 from dataloader.base import DuplicateItemError
-from dataloader.nyilvantarto import Nyilvantarto
-from dataloader.leszereles import Leszereles
-from dataloader.new_db import NewDb
+from dataloader.nyilvantarto import Nyilvantarto  # @UnusedImport
+from dataloader.leszereles import Leszereles  # @UnusedImport
+from dataloader.new_db import NewDb  # @UnusedImport
 from utils.pprinter import PPrinter
 
 from base import LoaderBase
@@ -56,12 +54,12 @@ class MunkaLoader(LoaderBase):
 
             email_dir = settings.EMAIL_SUCCESS_DIR
             try:
-                # =================================================================
+                # =============================================================
                 # Try to extract and load the data
-                # =================================================================
+                # =============================================================
                 if not mail.html:
-                    raise NotProcessableEmailError(u'Nem feldolgozható email: {}'
-                                                   u''.format(mail.filename))
+                    raise NotProcessableEmailError(u'Nem feldolgozható email: '
+                                                   u'{}'.format(mail.filename))
                 if not args.raw:
                     extracted_data = self.parser.parse(mail.html)
                 else:
@@ -74,10 +72,10 @@ class MunkaLoader(LoaderBase):
                 email_dir = settings.EMAIL_NOTPROC_DIR
 
             except Exception as e:
-                # =================================================================
+                # =============================================================
                 # Something went wrong, log the error and mark the email as
                 # errorneous
-                # =================================================================
+                # =============================================================
                 error_count += 1
                 email_dir = settings.EMAIL_ERROR_DIR
                 self.logger.error(u'{}: {}'.format(mail.filename, e))
@@ -97,10 +95,10 @@ class MunkaLoader(LoaderBase):
                             self._duplicate()
 
                         except Exception as e:
-                            # =================================================================
-                            # Something went wrong, log the error and mark the email as
-                            # errorneous
-                            # =================================================================
+                            # =================================================
+                            # Something went wrong, log the error and mark the
+                            # email as errorneous
+                            # =================================================
                             error_count += 1
                             email_dir = settings.EMAIL_ERROR_DIR
                             self.logger.error(u'{}: {}'.format(mail.filename, e))

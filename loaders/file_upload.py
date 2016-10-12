@@ -3,9 +3,9 @@
 import settings
 from downloader.fileloader import FileLoader
 from processors.mailparser import MailParser
-from dataloader.nyilvantarto import Nyilvantarto
-from dataloader.leszereles import Leszereles
-from dataloader.new_db import NewDb
+from dataloader.nyilvantarto import Nyilvantarto  # @UnusedImport
+from dataloader.leszereles import Leszereles  # @UnusedImport
+from dataloader.new_db import NewDb  # @UnusedImport
 
 from munka import MunkaLoader
 

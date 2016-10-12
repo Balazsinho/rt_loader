@@ -14,7 +14,7 @@ class Leszereles(DataLoaderBase):
     def _post_init(self):
         self._db = self.LESZ_DB
 
-    def insert_mail_data(self, data, mail_content):
+    def insert_mail_data(self, data, mail):
         if Fields.DEVICES in data:
             loc_id = self._get_loc_id(data)
             default_mech_id = self._get_default_mech_id()
@@ -23,7 +23,7 @@ class Leszereles(DataLoaderBase):
             except self.AlreadyExistsError:
                 return None
             self._insert_devices(data, client_id)
-            self._insert_mail_content(client_id, mail_content)
+            self._insert_mail_content(client_id, mail.html)
 
     def _insert_devices(self, data, client_id):
         stmt = ('INSERT dbo.BoxKartyak'
