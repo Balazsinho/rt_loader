@@ -2,15 +2,13 @@
 
 import os
 import codecs
+import importlib
 
 import settings
 from downloader.downloader import Downloader
 from processors.mailparser import MailParser
 
 from dataloader.base import DuplicateItemError
-from dataloader.nyilvantarto import Nyilvantarto  # @UnusedImport
-from dataloader.leszereles import Leszereles  # @UnusedImport
-from dataloader.new_db import NewDb  # @UnusedImport
 from utils.pprinter import PPrinter
 
 from base import LoaderBase
@@ -26,8 +24,10 @@ class InfoLoader(LoaderBase):
         self.email_acc = settings.ACC_INFO
         self.downloader = Downloader(self.logger)
         self.parser = MailParser(self.logger)
-        self.dataloaders = [globals()[loader_cls](self.logger)
-                            for loader_cls in LOADERS['info']]
+        self.dataloaders = []
+        for loader_cls_name in LOADERS['info']:
+            cls = importlib.import_module(loader_cls_name)
+            self.dataloaders.append(cls(self.logger))
 
     def run(self, args):
         # Download the mails

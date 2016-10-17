@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import importlib
+
 import settings
 from downloader.fileloader import FileLoader
 from processors.mailparser import MailParser
@@ -22,5 +24,7 @@ class FileUpload(MunkaLoader):
         self.email_acc = settings.MAIL_UPLOAD_DIR
         self.downloader = FileLoader(self.logger)
         self.parser = MailParser(self.logger)
-        self.dataloaders = [globals()[loader_cls](self.logger)
-                            for loader_cls in LOADERS['fileupload']]
+        self.dataloaders = []
+        for loader_cls_name in LOADERS['fileupload']:
+            cls = importlib.import_module(loader_cls_name)
+            self.dataloaders.append(cls(self.logger))

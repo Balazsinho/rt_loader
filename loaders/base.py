@@ -23,5 +23,5 @@ class LoaderBase(object):
 
     def _duplicate(self):
         self._duplicates += 1
-        if self._duplicates > 9:
+        if self._duplicates > 90:
             raise StopException('Duplikaciok miatt leall')
