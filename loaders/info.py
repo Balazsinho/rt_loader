@@ -26,7 +26,8 @@ class InfoLoader(LoaderBase):
         self.parser = MailParser(self.logger)
         self.dataloaders = []
         for loader_cls_name in LOADERS['info']:
-            cls = importlib.import_module(loader_cls_name)
+            loader_module = __import__('dataloader')
+            cls = getattr(loader_module, loader_cls_name)
             self.dataloaders.append(cls(self.logger))
 
     def run(self, args):
