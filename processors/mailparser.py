@@ -21,6 +21,7 @@ class MailParser(object):
     CLEANERS = (
         postparsers.clean_name,
         postparsers.clean_task_type,
+        postparsers.clean_mt_id,
     )
 
     def __init__(self, logger):

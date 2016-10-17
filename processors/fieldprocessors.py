@@ -152,12 +152,11 @@ def extract_bracketed(soup, extracted_data):
     result = {}
     for td in soup.find_all('td'):
         text = td.text or ''
-        bracketed = re.findall('\[([^\]]+)=([^\]]+)\]', text)
-        if bracketed:
-            for data in bracketed:
-                key, value = map(unicode.strip, data)
-                if key in KEY_MAP:
-                    result[KEY_MAP[key]] = value
+        bracketed = re.findall('\[([^\]]+)=([^\]]+)\]', text) or []
+        for data in bracketed:
+            key, value = map(unicode.strip, data)
+            if key in KEY_MAP:
+                result[KEY_MAP[key]] = value
     return result
 
 
@@ -369,3 +368,10 @@ def clean_task_type(processed_data):
             result[Fields.TASK_TYPE_LIST] = tasks
         result[Fields.TASK_TYPE] = ' '.join(tasks)
     return result
+
+
+def clean_mt_id(processed_data):
+    if Fields.MT_ID not in processed_data and \
+            Fields.TICKET_ID in processed_data:
+        return {Fields.MT_ID: processed_data[Fields.TICKET_ID]}
+    return {}

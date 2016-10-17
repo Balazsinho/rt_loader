@@ -965,6 +965,164 @@ class TestMailParsing(unittest.TestCase):
 
         self.assertDictEqual(output, expected)
 
+    def test_file32(self):
+        """Test setting MT ID to ticket ID if no MT ID is present"""
+        f = self._get_mail_file('test32.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'a_num': u'K3508460',
+            'addr1': u'1171 BUDAPEST PESTI ÚT 335',
+            'city': u'Budapest',
+            'devices': [{'device_sn': u'254069370',
+                         'device_type': u'ISB2201_STB'},
+                        {'device_sn': u'255361951',
+                         'device_type': u'ISB2201_STB'},
+                        {'device_sn': u'232014329',
+                         'device_type': u'Koax Dual 3.0 Cisco EPC3925'}],
+            'house_num': u'335',
+            'mt_id': u'63591488.2',
+            'name1': u'Jánószki István',
+            'name2': u'Jánószki István',
+            'phone1': u'209818671',
+            'remarks': (u'Ügyfél lassulást tapasztal internet szolgáltatásán.'
+                        u' Ping 25% pocket loss. Kérem nézzétek meg, '
+                        u'köszönöm.'),
+            'req_type': u'SERVICE',
+            'sla_h': u'24',
+            'street': u'PESTI ÚT',
+            'task_id': u'585',
+            'task_type': u'H-Internet Hibaelhárítás KOAX (HSZI SZK) [NG]',
+            'ticket_id': u'63591488.2',
+            'title': u'Hibaelhárítási munkalap',
+            'zip': u'1171'
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file33(self):
+        """Test setting MT ID to ticket ID if no MT ID is present"""
+        f = self._get_mail_file('test33.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'5400 MEZŐTÚR Nyári Nagy Pál utca 17 -',
+            'city': u'Mezőtúr',
+            'house_num': u'17 -',
+            'mt_id': u'63593804.2',
+            'name1': u'Zolnai Krisztina',
+            'name2': u'Zolnai Krisztina',
+            'phone1': u'705881068',
+            'remarks': (u'STB kártyahiba. Újraindítás nem segít, kábelek '
+                        u'rendben. Kérem, nézzétek meg, köszönöm. Kártyaszám:'
+                        u' 02063043174-8 CHIP ID: 00595257570'),
+            'req_type': u'SERVICE',
+            'sla_h': u'24',
+            'street': u'Nyári Nagy Pál utca',
+            'task_id': u'399',
+            'task_type': u'H-DVBS Hibaelhárítás SAT (HSZI SZK) [NG]',
+            'ticket_id': u'63593804.2',
+            'title': u'Hibaelhárítási munkalap',
+            'zip': u'5400',
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file34(self):
+        """Test setting MT ID to ticket ID if no MT ID is present"""
+        f = self._get_mail_file('test34.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'1171 BUDAPEST Gyöngfüzér utca 14 -',
+            'city': u'Budapest',
+            'house_num': u'14 -',
+            'mt_id': u'63593517.2',
+            'name1': u'Salamon Imre',
+            'name2': u'Salamon Imre',
+            'phone1': u'304553480',
+            'remarks': (u'Lassú és szakadozó internet. KTVadminban is rossz '
+                        u'jeladatok. Újraindítás nem segített. Kábelek ok. '
+                        u'Kérem nézzétek meg, köszönöm.'),
+            'req_type': u'SERVICE',
+            'sla_h': u'24',
+            'street': u'Gyöngfüzér utca',
+            'task_id': u'477',
+            'task_type': u'H-Internet Hibaelhárítás KOAX (HSZI SZK) [NG]',
+            'ticket_id': u'63593517.2',
+            'title': u'Hibaelhárítási munkalap',
+            'zip': u'1171'
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file35(self):
+        """Test setting MT ID to ticket ID if no MT ID is present"""
+        f = self._get_mail_file('test35.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'a_num': u'A2396294',
+            'addr1': u'1174 BUDAPEST TÁNCSICS MIHÁLY ÚT 31 -',
+            'city': u'Budapest',
+            'devices': [{'device_sn': u'G6D03796LRL',
+                         'device_type': u'Tatung STB-3112 CDA'},
+                        {'device_sn': u'261987941',
+                         'device_type': u'Koax Dual 3.0 Cisco EPC3925'}],
+            'house_num': u'31 -',
+            'mt_id': u'63592472.2',
+            'name1': u'Tóth Roland',
+            'name2': u'Tóth Roland',
+            'phone1': u'303583973',
+            'remarks': (u'Az ügyfélnél minden csatornán multicast hiba van. '
+                        u'Újraindítás nem segít. Kérem nézzétek meg, köszööm'),
+            'req_type': u'SERVICE',
+            'sla_h': u'24',
+            'street': u'TÁNCSICS MIHÁLY ÚT',
+            'task_id': u'552',
+            'task_type': u'H-IPTV Hibaelhárítás KOAX (HSZI SZK) [NG]',
+            'ticket_id': u'63592472.2',
+            'title': u'Hibaelhárítási munkalap',
+            'zip': u'1174'
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file36(self):
+        """Test setting MT ID to ticket ID if no MT ID is present"""
+        f = self._get_mail_file('test36.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'a_num': u'A2441759',
+            'addr1': u'1171 BUDAPEST Perec utca 19 .',
+            'city': u'Budapest',
+            'devices': [{'device_sn': u'G7D0K512LRL',
+                         'device_type': u'Tatung STB-3112 CDA'},
+                        {'device_sn': u'NQ1606536001304',
+                         'device_type': u'Koax Dual 3.0 Sagemcom F@ST3686'}],
+            'house_num': u'19',
+            'mt_id': u'63591180.2',
+            'name1': u'Martincsevics Györgyné',
+            'name2': u'Martincsevics Györgyné',
+            'phone1': u'703185142',
+            'remarks': (u'Ha felveszi a kagylót foglalt, ha hívják a számot a'
+                        u' vonalban kicseng, helyszínen nem. Hívást kezdemény'
+                        u'ezni/fogadni nem tud. Készülék ellenőrizve.HGW '
+                        u'áramtalanítás nem segít. Idős hölgy ezért szeretne'
+                        u' helyszíni hibaelhárítást.'),
+            'req_type': u'SERVICE',
+            'sla_h': u'72',
+            'street': u'Perec utca',
+            'task_id': u'530',
+            'task_type': u'H-VoCA Hibaelhárítás KOAX (HSZI SZK) [NG]',
+            'ticket_id': u'63591180.2',
+            'title': u'Hibaelhárítási munkalap',
+            'zip': u'1171'
+        }
+
+        self.assertDictEqual(output, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
