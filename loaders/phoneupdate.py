@@ -41,10 +41,11 @@ class PhoneUpdateLoader(LoaderBase):
                 self.logger.debug(u'Adatok írása: {} - {}'
                                   u''.format(mt_id, numbers_str))
 
-                try:
-                    leszereles.update_phone_number(mt_id, numbers_str)
-                except Exception as e:
-                    raise LoaderException(e)
+                if numbers_str.strip():
+                    try:
+                        leszereles.update_phone_number(mt_id, numbers_str)
+                    except Exception as e:
+                        raise LoaderException(e)
 
                 if row > 0 and row % 100 == 0:
                     self.logger.info(u'{} sor beírva'.format(row))
