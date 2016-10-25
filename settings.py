@@ -56,9 +56,9 @@ NEWDB = 'NewDb'
 
 # Config
 LOADERS = {
-    'info': (NYILVANTARTO, LESZERELES),
-    'munka': (NYILVANTARTO, LESZERELES),
-    'fileupload': (NYILVANTARTO, LESZERELES),
+    'info': (NEWDB,),
+    'munka': (NEWDB,),
+    'fileupload': (NEWDB,),
 }
 
 # =============================================================================
