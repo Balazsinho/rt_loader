@@ -27,7 +27,7 @@ class NewDb(object):
         f.close()
         result = json.loads(json.loads(result))
         if 'error' in result:
-            if result['error'].startswith('duplicate ticket'):
+            if str(result['error']).startswith('duplicate ticket'):
                 raise DuplicateItemError(u'A {} jegy azonosító már bent van az'
                                          u' adatbázisban'
                                          u''.format(data[Fields.TICKET_ID]))
