@@ -772,6 +772,10 @@ class TestMailParsing(unittest.TestCase):
             'house_num': u'16',
             'mt_id': u'706576846',
             'name1': u'Mikrofiber Marketing Kft',
+            'devices': [
+                {'device_sn': u'MENNY-17111482/1/1',
+                 'device_type': u'ADSL_1 ADSL ef. MODEM D-Link DSL-360R'},
+            ],
             'phone1': u'+36706135717',
             'street': u'Rózsa utca',
             'remarks': u'Eredménykód: OK Elõminõsítés/kap.fogl sikeres',
@@ -866,6 +870,8 @@ class TestMailParsing(unittest.TestCase):
         expected = {
             'addr1': u'1007 BUDAPEST Hajós Alfréd sétány 2',
             'city': u'Budapest',
+            'devices': [{'device_sn': u'MENNY-17114619/1/1',
+                         'device_type': u'3PLAY_HGW_1 Speedport Entry 2i'}],
             'house_num': u'2',
             'mt_id': u'462029189',
             'name1': u'Magyar Úszó Szövetség',
@@ -951,6 +957,8 @@ class TestMailParsing(unittest.TestCase):
             'mt_id': u'461998427',
             'name1': u'Fruitica Kft.',
             'order_num': u'7278011',
+            'devices': [{'device_sn': u'NE001ARI',
+                         'device_type': u'ISDN2_1 IS2 NetMod INTRACOM'}],
             'phone1': u'+36204556932',
             'remarks': u'Eredménykód: OK Előminősítés/kap.fogl sikeres',
             'street': u'Deák Ferenc utca',
@@ -1120,6 +1128,33 @@ class TestMailParsing(unittest.TestCase):
             'title': u'Hibaelhárítási munkalap',
             'zip': u'1171'
         }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file37(self):
+        f = self._get_mail_file('test37.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'2000 SZENTENDRE Dózsa György út 67 FS em. 5 ajtó',
+            'city': u'Szentendre',
+            'devices': [{'device_sn': u'MENNY-16244276/1/1',
+                         'device_type': u'3PLAY_STB_1 KISS STB_160GB'},
+                        {'device_sn': u'W42230600002598',
+                         'device_type': u'VDSL_HGW_1 SpeedportW721V(hu)'},
+                        {'device_sn': u'172541317',
+                         'device_type': u'3PLAY_MN_STB_1 ISB2001_STB'},
+                        {'device_sn': u'255996257',
+                         'device_type': u'3PLAY_MN_STB_2 ISB2201_STB'}],
+            'house_num': u'67 FS em 5 ajtó',
+            'mt_id': u'469448568',
+            'name1': u'Kézdi Miklós Pálné',
+            'phone1': u'+36301975740',
+            'remarks': u'Eredménykód: OK Elõminõsítés/kap.fogl sikeres',
+            'street': u'Dózsa György út',
+            'ticket_id': u'63290978-795',
+            'title': u'Munkaelrendelés',
+            'zip': u'2000'}
 
         self.assertDictEqual(output, expected)
 

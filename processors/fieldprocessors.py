@@ -228,6 +228,7 @@ def extract_device_params(soup, extracted_data):
         _extract_devices_method1(soup, extracted_data) or \
         _extract_devices_method2(soup, extracted_data) or \
         _extract_devices_method3(soup, extracted_data) or \
+        _extract_devices_method4(soup, extracted_data) or \
         {}
 
     # Filter the cards out - we don't need them
@@ -314,23 +315,42 @@ def _extract_devices_method3(soup, extracted_data):
     """
     devices = []
 
-    method2_res = _extract_col_adj_values(soup, 'Vonalkod')
-    if method2_res:
+    method3_res = _extract_col_adj_values(soup, 'Vonalkod')
+    if method3_res:
         serials = set()
-        # ei = [v[0] if v else ''
-        #       for v in _extract_col_adj_values(soup, 'Eszkozigeny')]
         tipus = _extract_col_adj_values(soup, 'Tipus')
-        vonalkod = method2_res
-        # cikkszam = _extract_col_adj_values(soup, 'Cikkszam')
+        vonalkod = method3_res
 
         for idx, t in enumerate(tipus):
             if vonalkod[idx] not in serials:
                 device = {
                     Fields.DEV_TYPE: t,
-                    # Fields.DEV_OWNERSHIP: ei[idx],
                     Fields.DEV_SN: vonalkod[idx],
                 }
                 serials.add(vonalkod[idx])
+                devices.append(device)
+
+    return devices
+
+
+def _extract_devices_method4(soup, extracted_data):
+    """
+    Method 4. Test37, test25, test28, test31
+    """
+    devices = []
+
+    tipus = _extract_col_adj_values(soup, 'Vegberendezes')
+    if tipus:
+        sns = _extract_col_adj_values(soup, 'Sorozatszam')
+        serials = set()
+
+        for idx, t in enumerate(tipus):
+            if t and sns[idx]:
+                device = {
+                    Fields.DEV_TYPE: t,
+                    Fields.DEV_SN: sns[idx],
+                }
+                serials.add(sns[idx])
                 devices.append(device)
 
     return devices
@@ -357,7 +377,8 @@ def clean_task_type(processed_data):
         task_type = task_type.strip()
         return re.sub(u'Alvállalkozó\s?\-\s?', u'', task_type)
 
-    task_type = processed_data[Fields.TASK_TYPE]
+    task_type = processed_data.get(Fields.TASK_TYPE) or \
+        processed_data[Fields.TITLE]
     result = {}
     tasks = re.findall('[HL]-.+?(?=[HL]-|$)', task_type)
     if tasks:
