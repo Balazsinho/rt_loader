@@ -1153,6 +1153,7 @@ class TestMailParsing(unittest.TestCase):
             'remarks': u'Eredménykód: OK Elõminõsítés/kap.fogl sikeres',
             'street': u'Dózsa György út',
             'ticket_id': u'63290978-795',
+            'task_type': u'Munkaelrendelés',
             'title': u'Munkaelrendelés',
             'zip': u'2000'}
 

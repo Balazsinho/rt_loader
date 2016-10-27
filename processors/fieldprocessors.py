@@ -380,7 +380,7 @@ def clean_task_type(processed_data):
     task_type = processed_data.get(Fields.TASK_TYPE) or \
         processed_data[Fields.TITLE]
     result = {}
-    tasks = re.findall('[HL]-.+?(?=[HL]-|$)', task_type)
+    tasks = re.findall('[HL]-.+?(?=[HL]-|$)', task_type) or [task_type]
     if tasks:
         tasks = map(_clean, tasks)
         seen = set()
