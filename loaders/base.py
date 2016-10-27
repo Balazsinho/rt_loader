@@ -10,6 +10,10 @@ class NotProcessableEmailError(Exception):
     pass
 
 
+class ErrorsDuringProcess(Exception):
+    pass
+
+
 class LoaderBase(object):
     def __init__(self, logger):
         self.logger = logger

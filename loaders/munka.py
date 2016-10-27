@@ -14,6 +14,7 @@ from utils.pprinter import PPrinter
 from base import LoaderBase
 from loaders.base import LoaderException
 from loaders.base import NotProcessableEmailError
+from loaders.base import ErrorsDuringProcess
 
 from settings import LOADERS
 
@@ -133,3 +134,6 @@ class MunkaLoader(LoaderBase):
 
         self.logger.info(u'--- Email feldolgozás kész {} hibaval ---'
                          ''.format(error_count))
+
+        if error_count > 0:
+            raise ErrorsDuringProcess()

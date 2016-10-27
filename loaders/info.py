@@ -14,6 +14,7 @@ from utils.pprinter import PPrinter
 from base import LoaderBase
 from loaders.base import LoaderException
 from loaders.base import NotProcessableEmailError
+from loaders.base import ErrorsDuringProcess
 
 from settings import LOADERS
 
@@ -71,7 +72,7 @@ class InfoLoader(LoaderBase):
                 else:
                     extracted_data = self.parser.extract_raw(mail.html)
 
-                PPrinter().pprint(extracted_data)
+                # PPrinter().pprint(extracted_data)
 
             except NotProcessableEmailError as e:
                 self.logger.warning(u'{}: {}'.format(mail.filename, e))
@@ -123,4 +124,7 @@ class InfoLoader(LoaderBase):
                     self.logger.info(u'File kiírva: {}'.format(mail_file.name))
 
         self.logger.info(u'--- Email feldolgozás kész {} hibaval ---'
-                         ''.format(error_count))
+                         u''.format(error_count))
+
+        if error_count > 0:
+            raise ErrorsDuringProcess()
