@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import sys
 import logging
 from logging.config import dictConfig
 import argparse
 
 import settings
 from loaders.base import StopException
+from loaders.base import ErrorsDuringProcess
 from loaders.munka import MunkaLoader
 from loaders.info import InfoLoader
 from loaders.phoneupdate import PhoneUpdateLoader
@@ -38,11 +40,16 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    # =========================================================================
+    # LOGIC
+    # =========================================================================
     if args.dry_run:
         logger.info(u'* DRY RUN - Csak feldolgozás teszt, nem történik írás')
     if args.raw:
         logger.info(u'* RAW - a nyers kinyert adatokat listázza, '
                     u'szűrés nélkül')
+
+    exit_code = 0
 
     for loader in LOADERS:
         loader_inst = loader(logger)
@@ -52,10 +59,13 @@ if __name__ == '__main__':
             loader_inst.pre_run(args)
             loader_inst.run(args)
         except StopException as e:
-            logger.error(u'Feldolgozás vége: {}'.format(e))
+            logger.info(u'Feldolgozás vége: {}'.format(e))
+        except ErrorsDuringProcess:
+            exit_code = 1
         except Exception as e:
             logger.error(u'Hiba a feldolgozás közben: {}'.format(e))
         finally:
             logger.info(u'Kész')
 
     logger.info(u'-- Összes kész')
+    sys.exit(exit_code)
