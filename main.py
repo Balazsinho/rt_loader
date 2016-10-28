@@ -12,6 +12,7 @@ from loaders.munka import MunkaLoader
 from loaders.info import InfoLoader
 from loaders.phoneupdate import PhoneUpdateLoader
 from loaders.file_upload import FileUpload
+from loaders.error_retry import ErrorRetry
 
 
 LOADERS = (
@@ -19,6 +20,7 @@ LOADERS = (
     InfoLoader,
     MunkaLoader,
     FileUpload,
+    ErrorRetry,
 )
 
 
