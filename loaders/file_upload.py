@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import importlib
-
 import settings
 from downloader.fileloader import FileLoader
 from processors.mailparser import MailParser
@@ -29,3 +27,6 @@ class FileUpload(MunkaLoader):
             loader_module = __import__('dataloader')
             cls = getattr(loader_module, loader_cls_name)
             self.dataloaders.append(cls(self.logger))
+
+    def _duplicate(self):
+        pass
