@@ -92,7 +92,7 @@ class MunkaLoader(LoaderBase):
                             marked_for_delete_idxs.append(mail.idx)
 
                         except DuplicateItemError as e:
-                            self.logger.warning(u'{}: {}'.format(mail.filename, e))
+                            self.logger.info(u'{}: {}'.format(mail.filename, e))
                             marked_for_delete_idxs.append(mail.idx)
                             self._duplicate()
 
