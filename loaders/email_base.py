@@ -2,6 +2,7 @@
 
 import os
 import codecs
+import traceback
 
 import settings
 from downloader.mail import Mail
@@ -65,6 +66,7 @@ class EmailLoaderBase(LoaderBase):
                 error_count += 1
                 mail.status = mail.ERROR
                 self.logger.error(u'{}: {}'.format(mail.filename, e))
+                traceback.print_exc()
 
             else:
                 if not args.dry_run and not args.raw:
@@ -86,6 +88,7 @@ class EmailLoaderBase(LoaderBase):
                             error_count += 1
                             mail.status = mail.ERROR
                             self.logger.error(u'{}: {}'.format(mail.filename, e))
+                            traceback.print_exc()
 
             if args.raw:
                 self.logger.info(u'*** Következő rekord')
