@@ -1159,6 +1159,31 @@ class TestMailParsing(unittest.TestCase):
 
         self.assertDictEqual(output, expected)
 
+    def test_file38(self):
+        f = self._get_mail_file('test38.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'7900 SZIGETVÁR Szabadság utca 43',
+            'city': u'Szigetvár',
+            'devices': [{'device_sn': u'252819612',
+                         'device_type': u'3PLAY_STB_1 ISB6030_STB_HDD_320GB'},
+                        {'device_sn': u'MENNY-17090751/1/1',
+                         'device_type': u'3PLAY_MN_STB_1 ISB2001_STB'}],
+            'house_num': u'43',
+            'mt_id': u'823222159',
+            'name1': u'Góra Tamás Zsolt',
+            'phone1': u'+36309978426',
+            'remarks': u'Góra Zsolt Tamás telefon: mobil: +36309978426',
+            'street': u'Szabadság utca',
+            'task_type': u'L-Szolgáltatás üzembehelyezés (Optika)',
+            'ticket_id': u'63666853-1035',
+            'title': u'Munkaelrendelés',
+            'zip': u'7900'
+        }
+
+        self.assertDictEqual(output, expected)
+
 
 if __name__ == '__main__':
     unittest.main()

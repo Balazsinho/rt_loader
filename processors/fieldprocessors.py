@@ -163,16 +163,18 @@ def extract_bracketed(soup, extracted_data):
 def extract_address(soup, extracted_data):
     """
     To extract the address from given in a non-standard format
-    e.g. test25.html
+    e.g. test25.html, test37.html, test38.html
     """
     result = {}
     for td in soup.find_all('td'):
-        if len(td.parent.find_all('td')) == 3 and \
-                'Letesitesi cim' in map(lambda x: unidecode(x).strip('": '),
-                                        td.find_all(text=True)):
-            next_td = td.next_sibling.next_sibling
-            address = next_td.find_all(text=True)[0]
-            result = {Fields.ADDR1: address.strip()}
+        texts = map(clean, filter(trash, td.find_all(text=True)))
+        if len(texts) == 1 and \
+                unidecode(texts[0]) == 'Letesitesi cim' and \
+                len(td.parent.find_all('td')) == 3:
+            row = td.parent.find_all('td')
+            addr_td = row[2]
+            address = addr_td.find_all(text=True)[0]
+            result = {Fields.ADDR1: clean(address)}
             break
 
     return result
