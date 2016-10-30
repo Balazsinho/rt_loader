@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 import settings
 from file_upload import FileUpload
+from downloader.fileloader import FileLoader
 
 
 class ErrorRetry(FileUpload):
@@ -12,7 +15,16 @@ class ErrorRetry(FileUpload):
 
     def pre_run(self, args):
         super(ErrorRetry, self).pre_run(args)
+        self.downloader = FileLoader(self.logger)
         self.email_acc = settings.EMAIL_ERROR_DIR
 
-    def _duplicate(self):
+    def _error(self, mail):
+        pass
+
+    def _success(self, mail):
+        super(ErrorRetry, self)._success(mail)
+        filename = os.path.join(self.email_acc, mail.filename)
+        os.remove(filename)
+
+    def _post_process(self, new_mails, args):
         pass

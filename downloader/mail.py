@@ -7,13 +7,19 @@ class Mail(object):
     ENCODING_META = '<meta charset="utf-8"/>'
     FN_PREFIX = datetime.now().strftime('%Y%m%d_%H%M%S')
 
-    def __init__(self, raw, idx):
+    OK = 'ok'
+    ERROR = 'error'
+    NOTPROC = 'notproc'
+
+    def __init__(self, raw, idx, filename=None):
         self.raw = raw
         self.idx = idx
-        self.filename = '{}_{}.html'.format(self.FN_PREFIX, self.idx)
+        self.filename = filename or '{}_{}.html'.format(self.FN_PREFIX,
+                                                        self.idx)
         self._from = None
         self._date = None
         self._html = None
+        self.status = self.OK
 
         if type(raw) in (unicode, str):
             self._html = raw
