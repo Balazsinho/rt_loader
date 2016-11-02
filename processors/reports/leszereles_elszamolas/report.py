@@ -21,7 +21,7 @@ def chunks(l, n):
 class LeszerelesElsz(ReportBase):
 
     def __init__(self, logger):
-        super(ReportBase, self).__init__(logger, settings.GYURI_DB)
+        super(ReportBase, self).__init__(logger)
 
     def initialize(self):
         def validate_num(num, min_val, max_val):
