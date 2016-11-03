@@ -23,7 +23,7 @@ class Leszereles(DataLoaderBase):
             except self.AlreadyExistsError:
                 return None
             self._insert_devices(data, client_id)
-            self._insert_mail_content(client_id, mail.html)
+            # self._insert_mail_content(client_id, mail.html)
 
     def _insert_devices(self, data, client_id):
         stmt = ('INSERT dbo.BoxKartyak'
@@ -34,6 +34,15 @@ class Leszereles(DataLoaderBase):
         conn = self._connect_db(self._db)
 
         for device in data[Fields.DEVICES]:
+            cursor = conn.cursor()
+            cursor.execute('SELECT count(1) FROM dbo.BoxKartyak '
+                           'WHERE bk_uAzon=%s AND Box=%s',
+                           (client_id,
+                            device[Fields.DEV_SN],))
+            num_devices = int(cursor.fetchone()[0])
+            if num_devices:
+                continue
+
             params = (
                 client_id,
                 device[Fields.DEV_SN],
@@ -42,7 +51,6 @@ class Leszereles(DataLoaderBase):
                 '0',
                 '0',
             )
-            cursor = conn.cursor()
             cursor.execute(stmt, params)
 
         conn.commit()
@@ -58,18 +66,19 @@ class Leszereles(DataLoaderBase):
         cursor = conn.cursor()
 
         # xxx... hack
-        cursor.execute("SELECT COUNT(1) FROM Ugyfelek WHERE MtAzon like '{}%%'"
+        cursor.execute("SELECT uAzon FROM Ugyfelek WHERE MtAzon like '{}%%'"
                        "".format(data[Fields.MT_ID]))
-        mt_count = cursor.fetchone()[0]
-        mt_postfix = 'x' * mt_count
-
-        if mt_postfix:
-            raise self.AlreadyExistsError()
+        try:
+            mt_id = cursor.fetchone()[0]
+            if mt_id:
+                return mt_id
+        except:
+            pass
 
         try:
             params = (
                 data[Fields.NAME1],
-                data[Fields.MT_ID] + mt_postfix,
+                data[Fields.MT_ID],
                 loc_id,
                 data[Fields.STREET],
                 data[Fields.HOUSE_NUM],
