@@ -65,8 +65,8 @@ class Leszereles(DataLoaderBase):
         conn = self._connect_db(self._db)
         cursor = conn.cursor()
 
-        cursor.execute("SELECT uAzon FROM Ugyfelek WHERE MtAzon={} "
-                       "AND uNev<>'NINCS ADAT'".format(data[Fields.MT_ID]))
+        cursor.execute("SELECT uAzon FROM Ugyfelek WHERE MtAzon=%s "
+                       "AND uNev<>'NINCS ADAT'", (data[Fields.MT_ID],))
         try:
             mt_id = cursor.fetchone()[0]
             if mt_id:
