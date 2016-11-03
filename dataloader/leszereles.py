@@ -65,9 +65,8 @@ class Leszereles(DataLoaderBase):
         conn = self._connect_db(self._db)
         cursor = conn.cursor()
 
-        # xxx... hack
-        cursor.execute("SELECT uAzon FROM Ugyfelek WHERE MtAzon like '{}%%'"
-                       "".format(data[Fields.MT_ID]))
+        cursor.execute("SELECT uAzon FROM Ugyfelek WHERE MtAzon=%s AND uNev<>%s"
+                       "".format(data[Fields.MT_ID], 'NINCS ADAT'))
         try:
             mt_id = cursor.fetchone()[0]
             if mt_id:
@@ -78,7 +77,7 @@ class Leszereles(DataLoaderBase):
         try:
             params = (
                 data[Fields.NAME1],
-                data[Fields.MT_ID],
+                data[Fields.MT_ID] + 'b',
                 loc_id,
                 data[Fields.STREET],
                 data[Fields.HOUSE_NUM],

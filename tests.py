@@ -6,6 +6,7 @@ import unittest
 
 from settings import PROJECT_DIR
 from processors.mailparser import MailParser
+from downloader.mail import Mail
 from utils.pprinter import PPrinter
 
 
@@ -32,16 +33,45 @@ class LoggerMock(object):
         self.log(msg)
 
 
+class TestRawMailParsing(unittest.TestCase):
+
+    """
+    Test the processing of the raw mail data
+    """
+
+    def setUp(self):
+        self.logger = LoggerMock()
+
+    def _get_mail_file(self, filename):
+        return codecs.open(
+            os.path.join(PROJECT_DIR, 'files', 'test',
+                         'raw', filename), 'r').readlines()
+
+    def test_raw1(self):
+        f = self._get_mail_file('test1.raw')
+        mail = Mail(f, 1)
+        self.assertEqual(mail.attachments.keys(),
+                         ['Telekom_SB_Header_Egyutt_Veled.png',
+                          'Telekom_SB_Header_T.png',
+                          'IMDB.png'])
+        with open('fos.html', 'w') as f:
+            f.write(mail.html)
+
+
 class TestMailParsing(unittest.TestCase):
+
+    """
+    Test the pickup and extraction of the HTML data
+    """
 
     def setUp(self):
         self.logger = LoggerMock()
         self.parser = MailParser(self.logger)
-        self.maxDiff = None
 
     def _get_mail_file(self, filename):
         return codecs.open(
-            os.path.join(PROJECT_DIR, 'files', 'test', filename), 'r').read()
+            os.path.join(PROJECT_DIR, 'files', 'test',
+                         'html', filename), 'r').read()
 
     def test_file1(self):
         f = self._get_mail_file('test1.html').replace('<!-- o ignored -->', '')
@@ -1180,6 +1210,51 @@ class TestMailParsing(unittest.TestCase):
             'ticket_id': u'63666853-1035',
             'title': u'Munkaelrendelés',
             'zip': u'7900'
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file39(self):
+        """
+        Test when there are multiple sheets on a single email - testing
+        extraction of devices mainly
+        """
+        f = self._get_mail_file('test39.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'PÉCS 7635 Bálicsi út 87.',
+            'agreed_time': u'2016-10-04 16:42:25 - 2019-07-02 16:42:25',
+            'city': u'Pécs',
+            'date_created': u'2016-09-29 10:32:31',
+            'devices': [
+                {'device_ownership': u'Bérelt',
+                 'device_sn': u'00541019686',
+                 'device_type': u'SAGEM DS86 HD DVB-S SET TOP BOX (MT)'},
+                {'device_ownership': u'Bérelt',
+                 'device_sn': u'00541244987',
+                 'device_type': u'SAGEM DS86 HD DVB-S SET TOP BOX (MT)'},
+                {'device_ownership': u'Bérelt',
+                 'device_sn': u'00541317742',
+                 'device_type': u'SAGEM DS86 HD DVB-S SET TOP BOX (MT)'},
+                {'device_ownership': u'Bérelt',
+                 'device_sn': u'268EG8JG1X03547',
+                 'device_type': u'Speedport Entry 2i'}],
+            'house_num': u'87',
+            'mt_id': u'807482730',
+            'name1': u'Pfeiffer Jelena Vlagyimirovna',
+            'order_num': u'37393633323233303031323136353231',
+            'oss_id': u'807482730',
+            'phone1': u'+36303678482',
+            'phone2': u'72236894',
+            'remarks': '',
+            'req_type': u'Mûszaki Hozzáférés - [LESZ] - ADSL_REZ',
+            'street': u'Bálicsi út',
+            'task_type': (u'L-Helyszíni Feladat MULTI-OPTIKA '
+                          u'(Alvállalkozó) [SPA]'),
+            'ticket_id': u'63272955-775',
+            'title': u'Szerelési lap',
+            'zip': u'7635'
         }
 
         self.assertDictEqual(output, expected)
