@@ -25,21 +25,21 @@ class EmailLoaderBase(LoaderBase):
     def _filter(self, mail):
         pass
 
-    def _extract(self, mail, args):
+    def _extract(self, mail):
         self.logger.info(u'--- Feldolgozás alatt: {}'
                          u''.format(mail.filename))
 
         if not mail.html:
             raise NotProcessableEmailError(u'Nem feldolgozható email: '
                                            u'{}'.format(mail.filename))
-        if not args.raw:
+        if not self._args.raw:
             extracted_data = self.parser.parse(mail.html)
         else:
             extracted_data = self.parser.extract_raw(mail.html)
 
         return extracted_data
 
-    def run(self, args):
+    def run(self):
         # Download the mails
         try:
             new_mails = self.downloader.fetch_mails(self.email_acc)
@@ -53,7 +53,7 @@ class EmailLoaderBase(LoaderBase):
                     continue
 
                 self._filter_attachments(mail)
-                extracted_data = self._extract(mail, args)
+                extracted_data = self._extract(mail)
 
             except NotProcessableEmailError as e:
                 self.logger.warning(u'{}: {}'.format(mail.filename, e))
@@ -65,12 +65,12 @@ class EmailLoaderBase(LoaderBase):
                 # errorneous
                 # =============================================================
                 error_count += 1
-                mail.status = mail.ERROR
                 self.logger.error(u'{}: {}'.format(mail.filename, e))
+                mail.status = mail.ERROR
                 traceback.print_exc()
 
             else:
-                if not args.dry_run and not args.raw:
+                if not self._args.dry_run and not self._args.raw:
                     for l in self.dataloaders:
                         try:
                             self.logger.info(u'Feltöltő futtatása: {}'
@@ -78,7 +78,8 @@ class EmailLoaderBase(LoaderBase):
                             l.insert_mail_data(extracted_data, mail)
 
                         except DuplicateItemError as e:
-                            self.logger.info(u'{}: {}'.format(mail.filename, e))
+                            self.logger.debug(u'{}: {}'.format(mail.filename, e))
+                            mail.status = mail.DUPLICATE
                             self._duplicate()
 
                         except Exception as e:
@@ -87,11 +88,11 @@ class EmailLoaderBase(LoaderBase):
                             # email as errorneous
                             # =================================================
                             error_count += 1
-                            mail.status = mail.ERROR
                             self.logger.error(u'{}: {}'.format(mail.filename, e))
+                            mail.status = mail.ERROR
                             traceback.print_exc()
 
-            if args.raw:
+            if self._args.raw:
                 self.logger.info(u'*** Következő rekord')
                 continue
 
@@ -100,7 +101,7 @@ class EmailLoaderBase(LoaderBase):
             # =================================================================
             # Write the email into the appropriate directory
             # =================================================================
-            if not args.dry_run:
+            if not self._args.dry_run:
                 if mail.status == mail.OK:
                     self._success(mail)
                 elif mail.status == mail.ERROR:
@@ -111,7 +112,7 @@ class EmailLoaderBase(LoaderBase):
         self.logger.info(u'--- Email feldolgozás kész {} hibaval ---'
                          u''.format(error_count))
 
-        self._post_process(new_mails, args)
+        self._post_process(new_mails)
 
         if error_count > 0:
             raise ErrorsDuringProcess()
@@ -128,18 +129,21 @@ class EmailLoaderBase(LoaderBase):
         """
         Fork for handling successful emails
         """
+        super(EmailLoaderBase, self)._success(mail)
         self._write(mail)
 
     def _error(self, mail):
         """
         Fork for handling errors during email processing
         """
+        super(EmailLoaderBase, self)._error(mail)
         self._write(mail)
 
     def _notproc(self, mail):
         """
         Fork for handling not processable emails
         """
+        super(EmailLoaderBase, self)._notproc(mail)
         self._write(mail)
 
     def _write(self, mail):

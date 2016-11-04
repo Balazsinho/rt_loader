@@ -13,8 +13,8 @@ class ErrorRetry(FileUpload):
     Uploads and deletes the files stored in settings.MAIL_ERROR_DIR
     """
 
-    def pre_run(self, args):
-        super(ErrorRetry, self).pre_run(args)
+    def pre_run(self):
+        super(ErrorRetry, self).pre_run()
         self.downloader = FileLoader(self.logger)
         self.email_acc = settings.EMAIL_ERROR_DIR
 
@@ -26,5 +26,5 @@ class ErrorRetry(FileUpload):
         filename = os.path.join(self.email_acc, mail.filename)
         os.remove(filename)
 
-    def _post_process(self, new_mails, args):
+    def _post_process(self, new_mails):
         pass

@@ -13,7 +13,7 @@ from utils import create_and_list_dir
 
 class PhoneUpdateLoader(LoaderBase):
 
-    def run(self, args):
+    def run(self):
         files_to_process = create_and_list_dir(self.logger,
                                                settings.PHONEUPD_DIR)
         leszereles = Leszereles(self.logger)

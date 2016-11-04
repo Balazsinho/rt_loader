@@ -11,8 +11,8 @@ from settings import LOADERS
 
 class InfoLoader(EmailLoaderBase):
 
-    def pre_run(self, args):
-        super(InfoLoader, self).pre_run(args)
+    def pre_run(self):
+        super(InfoLoader, self).pre_run()
         self.email_acc = settings.ACC_INFO
         self.downloader = Downloader(self.logger)
         self.parser = MailParser(self.logger)

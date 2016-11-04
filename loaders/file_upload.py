@@ -18,7 +18,7 @@ class FileUpload(MunkaLoader):
     Uploads and deletes the files stored in settings.MAIL_UPLOAD_DIR
     """
 
-    def pre_run(self, args):
+    def pre_run(self):
         self.email_acc = settings.MAIL_UPLOAD_DIR
         self.downloader = FileLoader(self.logger)
         self.parser = MailParser(self.logger)

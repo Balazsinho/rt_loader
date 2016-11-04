@@ -39,6 +39,10 @@ if __name__ == '__main__':
                         help='Do not perform any insertions/deletions/writes')
     parser.add_argument('--raw', dest='raw', action='store_true',
                         help='Show the unfiltered extraction result (raw)')
+    parser.add_argument('--duplicates', dest='duplicates', type=int,
+                        help=('How many consecutive duplicates '
+                              'will stop the execution'),
+                        default=5)
 
     args = parser.parse_args()
 
@@ -54,12 +58,12 @@ if __name__ == '__main__':
     exit_code = 0
 
     for loader in LOADERS:
-        loader_inst = loader(logger)
+        loader_inst = loader(logger, args)
         logger.info(u'Betöltő futtatása: {}'
                     u''.format(loader_inst.__class__.__name__))
         try:
-            loader_inst.pre_run(args)
-            loader_inst.run(args)
+            loader_inst.pre_run()
+            loader_inst.run()
         except StopException as e:
             logger.info(u'Feldolgozás vége: {}'.format(e))
         except ErrorsDuringProcess:

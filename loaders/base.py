@@ -20,9 +20,10 @@ class ErrorsDuringProcess(Exception):
 
 class LoaderBase(object):
 
-    def __init__(self, logger):
+    def __init__(self, logger, args):
         self.logger = logger
         self._duplicates = 0
+        self._args = args
 
     def _setup_env(self):
         if not os.path.exists(settings.EMAIL_SUCCESS_DIR):
@@ -34,10 +35,10 @@ class LoaderBase(object):
         if not os.path.exists(settings.EMAIL_NOTPROC_DIR):
             os.makedirs(settings.EMAIL_NOTPROC_DIR)
 
-    def pre_run(self, args):
+    def pre_run(self):
         self._setup_env()
 
-    def run(self, args):
+    def run(self):
         raise NotImplementedError()
 
     # ========================================================================
@@ -46,11 +47,11 @@ class LoaderBase(object):
 
     def _duplicate(self):
         self._duplicates += 1
-        if self._duplicates > 10:
+        if self._duplicates > self._args.duplicates:
             raise StopException('Duplikaciok miatt leall')
 
     def _error(self, *args):
         pass
 
     def _success(self, *args):
-        pass
+        self._duplicates = 0

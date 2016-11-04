@@ -10,6 +10,7 @@ class Mail(object):
     OK = 'ok'
     ERROR = 'error'
     NOTPROC = 'notproc'
+    DUPLICATE = 'duplicate'
 
     def __init__(self, raw, idx, filename=None):
         self.raw = raw
