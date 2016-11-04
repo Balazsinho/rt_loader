@@ -63,8 +63,9 @@ class Mail(object):
         for line_num, line in enumerate(self.raw):
             if line.lower().startswith('content-disposition'):
                 extract_re = ('content-disposition:\s*(?P<disposition>.*);'
-                              '\s*filename=(?P<filename>.*)')
-                m = re.match(extract_re, line + self.raw[line_num+1], re.I)
+                              '\s*filename=(?P<filename>.*(\.png|\.jpg|\.jpeg))')
+                m = re.match(extract_re, line, re.I) or \
+                    re.match(extract_re, line + self.raw[line_num+1], re.I)
                 if m and m.group('disposition').strip().lower() in ('attachment', 'inline'):
                     self._attachments[m.group('filename').strip().strip('"')] = \
                         self._extract_attachment(line_num)
