@@ -93,8 +93,7 @@ class EmailLoaderBase(LoaderBase):
                 self.logger.info(u'*** Következő rekord')
                 continue
 
-            self.logger.info(u'Feldolgozás {}'.format(
-                u'OK' if mail.status in (mail.OK, mail.DUPLICATE) else u'HIBA'))
+            self.logger.info(u'Feldolgozás {}'.format(mail.status))
             # =================================================================
             # Write the email into the appropriate directory
             # =================================================================

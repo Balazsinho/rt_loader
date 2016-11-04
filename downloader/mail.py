@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 from datetime import datetime
 
@@ -7,10 +9,10 @@ class Mail(object):
     ENCODING_META = '<meta charset="utf-8"/>'
     FN_PREFIX = datetime.now().strftime('%Y%m%d_%H%M%S')
 
-    OK = 'ok'
-    ERROR = 'error'
-    NOTPROC = 'notproc'
-    DUPLICATE = 'duplicate'
+    OK = u'OK'
+    ERROR = u'HIBA'
+    NOTPROC = u'NEM FELDOLGOZHATÓ'
+    DUPLICATE = u'DUPLIKÁLT'
 
     def __init__(self, raw, idx, filename=None):
         self.raw = raw
