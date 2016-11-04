@@ -56,7 +56,7 @@ class EmailLoaderBase(LoaderBase):
                 extracted_data = self._extract(mail)
 
             except NotProcessableEmailError as e:
-                self.logger.warning(u'{}: {}'.format(mail.filename, e))
+                self.logger.warning(u'{}'.format(e))
                 mail.status = mail.NOTPROC
 
             except Exception as e:
@@ -64,8 +64,7 @@ class EmailLoaderBase(LoaderBase):
                 # Something went wrong, log the error and mark the email as
                 # errorneous
                 # =============================================================
-                error_count += 1
-                self.logger.error(u'{}: {}'.format(mail.filename, e))
+                self.logger.error(u'{}'.format(e))
                 mail.status = mail.ERROR
                 traceback.print_exc()
 
@@ -78,17 +77,15 @@ class EmailLoaderBase(LoaderBase):
                             l.insert_mail_data(extracted_data, mail)
 
                         except DuplicateItemError as e:
-                            self.logger.debug(u'{}: {}'.format(mail.filename, e))
+                            self.logger.debug(u'{}'.format(e))
                             mail.status = mail.DUPLICATE
-                            self._duplicate()
 
                         except Exception as e:
                             # =================================================
                             # Something went wrong, log the error and mark the
                             # email as errorneous
                             # =================================================
-                            error_count += 1
-                            self.logger.error(u'{}: {}'.format(mail.filename, e))
+                            self.logger.error(u'{}'.format(e))
                             mail.status = mail.ERROR
                             traceback.print_exc()
 
@@ -105,9 +102,12 @@ class EmailLoaderBase(LoaderBase):
                 if mail.status == mail.OK:
                     self._success(mail)
                 elif mail.status == mail.ERROR:
+                    error_count += 1
                     self._error(mail)
                 elif mail.status == mail.NOTPROC:
                     self._notproc(mail)
+                elif mail.status == mail.DUPLICATE:
+                    self._duplicate()
 
         self.logger.info(u'--- Email feldolgozás kész {} hibaval ---'
                          u''.format(error_count))
