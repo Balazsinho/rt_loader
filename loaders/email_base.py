@@ -52,8 +52,8 @@ class EmailLoaderBase(LoaderBase):
                 if self._filter(mail):
                     continue
 
-                self._filter_attachments(mail)
                 extracted_data = self._extract(mail)
+                mail.attachments = self._filter_attachments(mail)
 
             except NotProcessableEmailError as e:
                 self.logger.warning(u'{}'.format(e))
@@ -120,9 +120,9 @@ class EmailLoaderBase(LoaderBase):
         """
         Fork for filtering useful attachments
         """
-        mail.attachments = dict([(k, v) for k, v
-                                 in mail.attachments.iteritems()
-                                 if 'imdb' in k.lower()])
+        return dict([(k, v) for k, v
+                     in mail.attachments.iteritems()
+                     if 'imdb' in k.lower()])
 
     def _success(self, mail):
         """
