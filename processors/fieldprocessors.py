@@ -358,7 +358,7 @@ def _extract_devices_method4(soup, extracted_data):
     return devices
 
 
-def _extract_title(soup, extracted_data):
+def extract_title(soup, extracted_data):
     """
     Extract title from the mail
     """

@@ -16,7 +16,7 @@ class MailParser(object):
         postparsers.extract_collectable_money,
         postparsers.extract_address,
         postparsers.extract_bracketed,
-        postparsers._extract_title,
+        postparsers.extract_title,
     )
 
     CLEANERS = (
