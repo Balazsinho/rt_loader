@@ -90,7 +90,6 @@ class TestMailParsing(unittest.TestCase):
             'task_type': (u'L-Szolgáltatás üzembehelyezés '
                           u'(Optika)'),
             'ticket_id': u'61728463-1343',
-            'title': None,
             'zip': u'1148'
         }
 
@@ -216,7 +215,6 @@ class TestMailParsing(unittest.TestCase):
             'street': u'Hőforrás utca',
             'task_type': u'L-DVBS eszköz leszerelés díjtartozás miatt [SPA]',
             'ticket_id': u'47025926-270',
-            'title': None,
             'zip': u'4200'
         }
 

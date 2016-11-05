@@ -358,9 +358,23 @@ def _extract_devices_method4(soup, extracted_data):
     return devices
 
 
+def _extract_title(soup, extracted_data):
+    """
+    Extract title from the mail
+    """
+    result = {}
+    title = soup.find('title')
+    if title:
+        texts = filter(trash, title.find_all(text=True))
+        title = map(clean, texts)[0] if texts else None
+        result = {Fields.TITLE: title}
+
+    return result
+
 # =============================================================================
 # DATA CLEANERS ON THE FINAL DATA
 # =============================================================================
+
 
 def clean_name(processed_data):
     name1 = processed_data[Fields.NAME1]

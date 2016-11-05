@@ -16,6 +16,7 @@ class MailParser(object):
         postparsers.extract_collectable_money,
         postparsers.extract_address,
         postparsers.extract_bracketed,
+        postparsers._extract_title,
     )
 
     CLEANERS = (
@@ -34,9 +35,7 @@ class MailParser(object):
         of the email that needs to be processed.
         """
         soup = BeautifulSoup(mail_contents, 'lxml')
-        extracted_data = {
-            field_map.Fields.TITLE: self._extract_title(soup)
-        }
+        extracted_data = {}
 
         for row in soup.find_all('tr'):
             cells = row.find_all('td')
