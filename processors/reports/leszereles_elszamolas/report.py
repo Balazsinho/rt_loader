@@ -125,7 +125,7 @@ class LeszerelesElsz(ReportBase):
         report_data_cleaned = []
         for row in report_data:
             if 'nincs' in row['uNev'].lower():
-                stmt = '''
+                stmt = u'''
                 SELECT [Felvitel]
                 ,[MtAzon]
                 ,[JegyAzon]
