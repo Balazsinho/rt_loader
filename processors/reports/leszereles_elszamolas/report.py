@@ -157,6 +157,7 @@ class LeszerelesElsz(ReportBase):
                 rows = cursor.fetchall()
                 conn.close()
                 best_row = rows[-1]
+                best_row['MtAzon'] = best_row['MtAzon'].strip('xb')
                 report_data_cleaned.append(best_row)
             else:
                 report_data_cleaned.append(row)
