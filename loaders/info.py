@@ -23,8 +23,8 @@ class InfoLoader(EmailLoaderBase):
             self.dataloaders.append(cls(self.logger))
 
     def _filter(self, mail):
-        if mail.mail_from not in ('wfms_eventus@telekom.hu'):
-            self.logger.debug(u'Levél átugrása innen: {}'
-                              u''.format(mail.mail_from))
+        if 'wfms_eventus@telekom.hu' not in mail.mail_from:
+            self.logger.debug('Mail skipped from: {}'
+                              ''.format(mail.mail_from))
             return True
         return False

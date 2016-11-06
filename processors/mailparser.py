@@ -34,7 +34,7 @@ class MailParser(object):
         There is a large amount of trash generated given the obscure nature
         of the email that needs to be processed.
         """
-        soup = BeautifulSoup(mail_contents, 'lxml')
+        soup = BeautifulSoup(mail_contents, 'html.parser')
         extracted_data = {}
 
         for row in soup.find_all('tr'):

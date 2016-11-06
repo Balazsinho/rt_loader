@@ -47,16 +47,6 @@ class TestRawMailParsing(unittest.TestCase):
             os.path.join(PROJECT_DIR, 'files', 'test',
                          'raw', filename), 'r').readlines()
 
-    def test_raw1(self):
-        f = self._get_mail_file('test1.raw')
-        mail = Mail(f, 1)
-        self.assertEqual(mail.attachments.keys(),
-                         ['Telekom_SB_Header_Egyutt_Veled.png',
-                          'Telekom_SB_Header_T.png',
-                          'IMDB.png'])
-        with open('fos.html', 'w') as f:
-            f.write(mail.html)
-
 
 class TestMailParsing(unittest.TestCase):
 
@@ -1212,47 +1202,124 @@ class TestMailParsing(unittest.TestCase):
 
         self.assertDictEqual(output, expected)
 
-    def test_file39(self):
+    def test_file40(self):
         """
         Test when there are multiple sheets on a single email - testing
         extraction of devices mainly
         """
-        f = self._get_mail_file('test39.html')
+        f = self._get_mail_file('test40.html')
         output = self.parser.parse(f)
         # PPrinter(indent=0).pprint(output)
         expected = {
-            'addr1': u'PÉCS 7635 Bálicsi út 87.',
-            'agreed_time': u'2016-10-04 16:42:25 - 2019-07-02 16:42:25',
-            'city': u'Pécs',
-            'date_created': u'2016-09-29 10:32:31',
+            'addr1': u'TÓSZEG 5091 Tópart út 2.',
+            'agreed_time': u'2016-11-07 08:00:00 - 2016-11-07 10:00:00',
+            'city': u'Tószeg',
+            'date_created': u'2016-11-03 16:46:05',
             'devices': [
                 {'device_ownership': u'Bérelt',
-                 'device_sn': u'00541019686',
-                 'device_type': u'SAGEM DS86 HD DVB-S SET TOP BOX (MT)'},
+                 'device_sn': u'00528552987',
+                 'device_type': u'HUAWEI EC2208S HD HIBRID STB'},
                 {'device_ownership': u'Bérelt',
-                 'device_sn': u'00541244987',
-                 'device_type': u'SAGEM DS86 HD DVB-S SET TOP BOX (MT)'},
+                 'device_sn': u'CJZA03919102134',
+                 'device_type': u'ADB-5800S -HD AVC DVB-S SET TOP BOX (MT)'},
                 {'device_ownership': u'Bérelt',
-                 'device_sn': u'00541317742',
-                 'device_type': u'SAGEM DS86 HD DVB-S SET TOP BOX (MT)'},
-                {'device_ownership': u'Bérelt',
-                 'device_sn': u'268EG8JG1X03547',
-                 'device_type': u'Speedport Entry 2i'}],
-            'house_num': u'87',
-            'mt_id': u'807482730',
-            'name1': u'Pfeiffer Jelena Vlagyimirovna',
-            'order_num': u'37393633323233303031323136353231',
-            'oss_id': u'807482730',
-            'phone1': u'+36303678482',
-            'phone2': u'72236894',
+                 'device_sn': u'CJZA03919102136',
+                 'device_type': u'ADB-5800S -HD AVC DVB-S SET TOP BOX (MT)'}],
+            'house_num': u'2',
+            'mt_id': u'474831361',
+            'name1': u'Szabó Józsefné',
+            'order_num': u'2d373532363831333136343430333831',
+            'oss_id': u'474831361',
+            'phone1': u'+36705680851',
+            'phone2': u'56431423',
             'remarks': '',
-            'req_type': u'Mûszaki Hozzáférés - [LESZ] - ADSL_REZ',
-            'street': u'Bálicsi út',
-            'task_type': (u'L-Helyszíni Feladat MULTI-OPTIKA '
-                          u'(Alvállalkozó) [SPA]'),
-            'ticket_id': u'63272955-775',
+            'req_type': u'Műszaki Hozzáférés - [LESZ] - MSAN_REZ',
+            'street': u'Tópart út',
+            'task_type': (u'L-Vonalépítés - Multiservice Point [SPA] '
+                          u'L-MDF - Multiservice Point [SPA]'),
+            'task_type_list': [u'L-Vonalépítés - Multiservice Point [SPA]',
+                               u'L-MDF - Multiservice Point [SPA]'],
+            'ticket_id': u'63892344-605',
             'title': u'Szerelési lap',
-            'zip': u'7635'
+            'zip': u'5091'
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file41(self):
+        """
+        Test when there are multiple sheets on a single email - testing
+        extraction of devices mainly
+        """
+        f = self._get_mail_file('test41.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'TÓSZEG 5091 Széchenyi út 33.',
+            'agreed_time': u'2016-11-07 12:00:00 - 2016-11-07 14:00:00',
+            'city': u'Tószeg',
+            'date_created': u'2016-11-04 08:18:21',
+            'devices': [
+                {'device_ownership': u'Bérelt',
+                 'device_sn': u'ZTEEF01BB410680',
+                 'device_type': u'ZXV10 H201L'}],
+            'house_num': u'33',
+            'mt_id': u'706215345',
+            'name1': u'Szabó Anita',
+            'order_num': u'37313335323737333532313939343036',
+            'oss_id': u'706215345',
+            'phone1': u'+36706658716',
+            'phone2': u'56402818',
+            'remarks': u'efi kéri, hogy kolléga érkezés előtt fél órával keresse',
+            'req_type': u'Műszaki Hozzáférés - [LESZ] - ADSL_REZ',
+            'street': u'Széchenyi út',
+            'task_type': (u'L-Vonalépítés - Multiservice Point [SPA] '
+                          u'L-MDF - Multiservice Point [SPA]'),
+            'task_type_list': [u'L-Vonalépítés - Multiservice Point [SPA]',
+                               u'L-MDF - Multiservice Point [SPA]'],
+            'ticket_id': u'63901830-481',
+            'title': u'Szerelési lap',
+            'zip': u'5091'
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file42(self):
+        """
+        Test extracting devices and data with multiple <html> tags in the
+        document. Sweet
+        """
+        f = self._get_mail_file('test42.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'ÚJSZÁSZ 5052 Jókai út 16.',
+            'agreed_time': u'2016-11-07 15:00:00 - 2016-11-07 17:00:00',
+            'city': u'Újszász',
+            'date_created': u'2016-11-03 09:20:05',
+            'devices': [
+                {'device_ownership': u'Bérelt',
+                 'device_sn': u'00595751190',
+                 'device_type': u'INTEK-S50CX DVB-S2 MPEG4 SD SET TOP BOX'},
+                {'device_ownership': u'Bérelt',
+                 'device_sn': u'00595872636',
+                 'device_type': u'INTEK-S50CX DVB-S2 MPEG4 SD SET TOP BOX'},
+                {'device_sn': u'ZTEEF01DBJ00545',
+                 'device_type': u'ZXV10 H201L BJ'}],
+            'house_num': u'16',
+            'mt_id': u'691313039',
+            'name1': u'Korona Attila',
+            'order_num': u'35353533353131303737373031333533',
+            'oss_id': u'691313039',
+            'phone1': u'+36703492323',
+            'phone2': u'56950615',
+            'remarks': '',
+            'req_type': u'Műszaki Hozzáférés - [MÓD] - ADSL_REZ',
+            'street': u'Jókai út',
+            'task_type': u'L-Helyszíni Feladat MULTI-DVBS [SPA]',
+            'ticket_id': u'63878315-490',
+            'title': u'Szerelési lap',
+            'zip': u'5052'
         }
 
         self.assertDictEqual(output, expected)

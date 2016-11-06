@@ -53,5 +53,8 @@ class LoaderBase(object):
     def _error(self, *args):
         pass
 
+    def _notproc(self, *args):
+        pass
+
     def _success(self, *args):
         self._duplicates = 0

@@ -4,6 +4,7 @@ import sys
 import logging
 from logging.config import dictConfig
 import argparse
+import traceback
 
 import settings
 from loaders.base import StopException
@@ -70,6 +71,7 @@ if __name__ == '__main__':
             exit_code = 1
         except Exception as e:
             logger.error(u'Hiba a feldolgozás közben: {}'.format(e))
+            traceback.print_exc()
         finally:
             logger.info(u'Kész')
 

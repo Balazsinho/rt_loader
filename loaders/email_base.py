@@ -93,7 +93,7 @@ class EmailLoaderBase(LoaderBase):
                 self.logger.info(u'*** Következő rekord')
                 continue
 
-            self.logger.info(u'Feldolgozás {}'.format(mail.status))
+            self.logger.info(u'{}'.format(mail.status))
             # =================================================================
             # Write the email into the appropriate directory
             # =================================================================
