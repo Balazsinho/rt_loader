@@ -21,7 +21,7 @@ class Nyilvantarto(DataLoaderBase):
             client_type_id = None
         new_id = self._insert_data(data, loc_id, default_mech_id,
                                    client_type_id, mail.mail_date)
-        self._insert_mail_content(new_id, mail.html)
+        self._insert_mail_content(new_id, mail.pretty)
 
     def _get_client_type_id(self, data):
         conn = self._connect_db(self._db)

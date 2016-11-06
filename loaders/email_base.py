@@ -151,6 +151,6 @@ class EmailLoaderBase(LoaderBase):
         """
         path = self.STATUS_DIR_MAP[mail.status]
         filename = os.path.join(path, mail.filename)
-        with codecs.open(filename, 'w') as mail_file:
-            mail_file.write(mail.html)  # or u'<br />\n'.join(map(unidecode, mail.raw)))
+        with codecs.open(filename, 'w', 'utf-8') as mail_file:
+            mail_file.write(mail.pretty)
             self.logger.info(u'File kiírva: {}'.format(mail_file.name))

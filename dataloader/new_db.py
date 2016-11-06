@@ -17,7 +17,7 @@ class NewDb(object):
         url = 'http://{}/api/v1/ticket/create'.format(settings.ROVIDTAV_SERVER)
         auth = base64.encodestring(settings.ROVIDTAV_AUTH).strip()
         auth_header = 'Basic {}'.format(auth)
-        data['html'] = mail.html.decode('latin-1').replace(u'"', u'\\"')
+        data['html'] = mail.pretty
         data['mail_date'] = str(mail.mail_date)
         data['attachments'] = mail.attachments
         req = urllib2.Request(url, json.dumps(data),

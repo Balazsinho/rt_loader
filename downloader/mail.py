@@ -8,10 +8,12 @@ import email
 import email.utils
 from datetime import datetime
 
+from bs4 import BeautifulSoup
+
 
 class Mail(object):
 
-    ENCODING_META = u'<meta charset="utf-8"/>'
+    ENCODING_META = '<meta charset="utf-8"/>'
     FN_PREFIX = datetime.now().strftime('%Y%m%d_%H%M%S')
 
     OK = u'OK'
@@ -28,17 +30,24 @@ class Mail(object):
         self.mail = email.message_from_string('\n'.join(raw))
         payload = self.mail.get_payload()
         if type(payload) in (str, unicode):
-            self._html = payload
+            pl = payload
             self.attachments = {}
         else:
-            self._html = payload[0].get_payload()
+            pl = payload[0].get_payload()
             self.attachments = self._parse_attachments()
 
+        self.content = pl
+        self.html = pl if self._validate_html(pl) else None
+        self.soup = BeautifulSoup(self.html, 'html.parser') if self.html \
+            else None
+
+    def _validate_html(self, html):
+        return '<html' in html
+
     @property
-    def html(self):
-        return self._html
-        return self.ENCODING_META + self._html if self._html \
-            else ''
+    def pretty(self):
+        return (self.ENCODING_META + self.soup.prettify()) if self.soup else \
+            self.content
 
     @property
     def mail_from(self):
