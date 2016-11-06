@@ -150,7 +150,7 @@ class LeszerelesElsz(ReportBase):
                 LEFT JOIN [leszereles].[dbo].[Raklapok] ON  [rlId] = [bk_rlId]
                 WHERE Box='{}'
                 ORDER BY Felvitel
-                '''.format(row['box'])
+                '''.format(row['Box'])
                 conn = self._connect_db(self.LESZ_DB, as_dict=True)
                 cursor = conn.cursor()
                 cursor.execute(select_stmt)
