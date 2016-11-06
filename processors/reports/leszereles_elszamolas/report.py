@@ -121,7 +121,47 @@ class LeszerelesElsz(ReportBase):
         # Collect the devices
         self.logger.info('Adatok szamitasa/kiirasa folyamatban...')
         devices = defaultdict(self._empty_dev)
+
+        report_data_cleaned = []
         for row in report_data:
+            if 'nincs' in row['uNev'].lower():
+                stmt = '''
+                SELECT [Felvitel]
+                ,[MtAzon]
+                ,[JegyAzon]
+                ,[uNev]
+                ,[tNev]
+                ,[tIrsz]
+                ,[Utca]
+                ,[Vart_Box]
+                ,[Vart_Kartya]
+                ,[Lezarva]
+                ,[Box]
+                ,[rlMegjegyzes]
+                ,[Kartya]
+                ,[mhtNev]
+                ,[uMegjegyzes]
+                ,[Beveve]
+                FROM [leszereles].[dbo].[Ugyfelek]
+                LEFT JOIN [leszereles].[dbo].[BoxKartyak] ON [bk_uAzon] = [uAzon]
+                LEFT JOIN [leszereles].[dbo].[Telepules] ON [u_tAzon] = [tAzon]
+                LEFT JOIN [leszereles].[dbo].[v_MegHiusulasTipusok]
+                    ON [u_mhtId] = [mhtId]
+                LEFT JOIN [leszereles].[dbo].[Raklapok] ON  [rlId] = [bk_rlId]
+                WHERE Box='{}'
+                ORDER BY Felvitel
+                '''.format(row['box'])
+                conn = self._connect_db(self.LESZ_DB, as_dict=True)
+                cursor = conn.cursor()
+                cursor.execute(select_stmt)
+                rows = cursor.fetchall()
+                conn.close()
+                best_row = rows[-1]
+                report_data_cleaned.append(best_row)
+            else:
+                report_data_cleaned.append(row)
+
+        for row in report_data_cleaned:
             if self._dev_ok(row['Vart_Box']):
                 box = {
                     'box': row['Vart_Box'],
@@ -149,7 +189,7 @@ class LeszerelesElsz(ReportBase):
         row_idx = 3
 
         already_written = set()
-        for row in report_data:
+        for row in report_data_cleaned:
             if row['MtAzon'] not in already_written:
                 vart_box_rows = chunks(devices[row['MtAzon']]['vart_box'], 3)
                 box_rows = chunks(devices[row['MtAzon']]['box'], 3)
