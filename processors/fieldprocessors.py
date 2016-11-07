@@ -180,30 +180,6 @@ def extract_address(soup, extracted_data):
     return result
 
 
-def extract_remark(soup, extracted_data):
-    result = {}
-    # Triplets, first value is the word to look for,
-    # second value is the column in the next row to look
-    # third value is the exeptions if the result starts with, ignore all
-    words_to_seek = (
-        ['Leiras'],
-        ['Megjegyzesek', 3, ('IMDB', 'EGYSEGES EGYEDI')],
-        ['Megjegyzesek'],
-    )
-
-    for lookup in words_to_seek:
-        word, col, exceptions = lookup + [None]*(3-len(lookup))
-        remarks = _extract_col_adj_values(soup, word, col)
-        if remarks:
-            if exceptions and unidecode(remarks[0]).startswith(exceptions):
-                continue
-            # We need only the first row (?)
-            result = {Fields.REMARKS: remarks[0]}
-            break
-
-    return result
-
-
 def extract_task_type(soup, extracted_data):
     """
     Required for yet again some weird format where the task type and the value

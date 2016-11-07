@@ -41,8 +41,8 @@ USABLE_FIELDS = [
     ('Feladat', Fields.TASK_TYPE,),
 
     ('Hibaelharitasi hatarido [ora]', Fields.SLA_H),
-    ('Feladat megjegyzes', Fields.REMARKS),
-    ('Leiras', Fields.REMARKS),
+    # ('Feladat megjegyzes', Fields.REMARKS),
+    # ('Leiras', Fields.REMARKS),
 
     ('Veteli hely', Fields.ADDR1,
      [fieldprocessors.address]),

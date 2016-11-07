@@ -10,7 +10,6 @@ from processors.fieldprocessors import clean, trash
 class MailParser(object):
 
     POST_PARSERS = (
-        postparsers.extract_remark,
         postparsers.extract_task_type,
         postparsers.extract_device_params,
         postparsers.extract_collectable_money,
