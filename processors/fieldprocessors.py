@@ -120,14 +120,18 @@ def _extract_col_adj_values(soup, header, next_row_cell=None):
                 unidecode(texts[0].strip().strip('":')) == header:
             idx = next_row_cell or filter(lambda x: x.name == 'td',
                                           td.parent.contents).index(td)
-            next_tr = td.parent.findNext('tr')
-            while next_tr and next_tr.name == 'tr':
-                next_tr_cells = next_tr.find_all('td')
+
+            parent_table = td.parent
+            while parent_table.name != 'table':
+                parent_table = parent_table.parent
+
+            rows = parent_table.find_all('tr')
+            for row in (rows[1:] if len(rows) > 1 else rows):  # Skip the header
+                next_tr_cells = row.find_all('td')
                 if len(next_tr_cells) < idx:
                     break
                 data = filter(trash, map(clean, next_tr_cells[idx].find_all(text=True)))
                 extracted.append(' '.join(data))
-                next_tr = next_tr.next_sibling
             break
     return extracted
 

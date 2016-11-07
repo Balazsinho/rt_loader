@@ -57,6 +57,7 @@ class TestMailParsing(unittest.TestCase):
     def setUp(self):
         self.logger = LoggerMock()
         self.parser = MailParser(self.logger)
+        self.maxDiff = None
 
     def _get_mail_file(self, filename):
         return codecs.open(
@@ -75,7 +76,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Fifo Kft.',
             'order_num': u'7264734',
             'phone1': u'+36309892944',
-            'remarks': u'Eredménykód: OK Előminősítés/kap.fogl sikeres',
             'street': u'Fogarasi út',
             'task_type': (u'L-Szolgáltatás üzembehelyezés '
                           u'(Optika)'),
@@ -113,7 +113,6 @@ class TestMailParsing(unittest.TestCase):
             'oss_id': u'33333333',
             'phone1': u'+36703654519',
             'phone2': u'56481562',
-            'remarks': '',
             'req_type': u'Műszaki Hozzáférés - [MÓD] - SATTV',
             'street': u'Háy Mihály út',
             'task_type': u'L-Helyszíni Feladat MULTI-DVBS [SPA]',
@@ -137,9 +136,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Erdélyiné Fosos Erzsébet',
             'name2': u'Erdélyiné Sipos Erzsébet',
             'phone1': u'306902317',
-            'remarks': (u'Efinél nem működik az ISAT TV. Újraindítás '
-                        u'nem oldotta meg, kábelek rendben, kártya ki-be. '
-                        u'(SMC: MDF Érpár bounding szakadás)'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'Táncsics Mihály út',
@@ -168,7 +164,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Externet Nyrt.',
             'name2': u'Madák Attiláné',
             'phone1': u'703612461',
-            'remarks': u'kábelmodem hiba',
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'Duna utca',
@@ -198,8 +193,6 @@ class TestMailParsing(unittest.TestCase):
             'ki_id': u'1156290',
             'mt_id': u'888888888',
             'name1': u'DIANISKA KFT',
-            'remarks': (u'Leszerelés nem történt, a leszerelés '
-                        u'meghiúsulásának oka'),
             'phone1': u'309670566',
             'req_type': u'Műszaki Hozzáférés - [LESZ] - SATTV',
             'street': u'Hőforrás utca',
@@ -233,7 +226,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Sztankovszkyné Póczik Katalin',
             'name2': u'Sztankovszkyné Póczik Katalin',
             'phone1': u'705564258',
-            'remarks': u'Efinek újraindtás nem segit szakad a szolg.',
             'req_type': u'ACCESS',
             'sla_h': u'24',
             'street': u'Magyar utca',
@@ -264,9 +256,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Fehér István',
             'name2': u'Fehér István',
             'phone1': u'302170552',
-            'remarks': (u'Ügyfél jelezte hogy nem müködik a tv szolgáltatása.'
-                        u'Kábelek rendben,újrainditás nem segit.'
-                        u'Kérem nézzétek meg köszönöm.'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'József Attila utca',
@@ -294,7 +283,6 @@ class TestMailParsing(unittest.TestCase):
             'oss_id': u'824755686',
             'phone1': u'+36205397385',
             'phone2': u'13968303',
-            'remarks': u'érkezés elõtt 1 órával hívni kellene majd Efi-t',
             'req_type': u'Mûszaki Hozzáférés - [FEL] - GPON_OPTIKA',
             'street': u'Balzac utca',
             'task_type': (u'L-Vonalépítés (Optikai hálózat) [SPA] '
@@ -319,8 +307,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Gáli János',
             'name2': u'GÁLI JÁNOS',
             'phone1': u'204214878',
-            'remarks': (u'AD SZÁM: A0466150 204214878 NINCS NET, ÁRAMT. KÉSZ, '
-                        u'ROUTER NÉLKÜL SINCS KAPCSOLAT.'),
             'street': u'Madarász Viktor utca',
             'task_type': u'H-Internet hibaelhárítás (TMSzK)',
             'ticket_id': u'62107940',
@@ -342,8 +328,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Küzmös György',
             'name2': u'Küzmös György',
             'phone1': u'204713153',
-            'remarks': (u'Ha hívják a számot, más jelentkezik, el van kötve a '
-                        u'vonal úgy tûnik. Kéri nézzük meg. Köszönöm'),
             'req_type': u'SERVICE',
             'sla_h': u'72',
             'street': u'Kökény utca',
@@ -367,7 +351,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Nyilvános Állomás',
             'name2': u'Dénes György',
             'phone1': u'303914300',
-            'remarks': u'Vonal hiba / vonala levezet /',
             'street': u'Kossuth Lajos utca',
             'task_type': u'H-Elõfizetõi vonalhiba elhárítás',
             'ticket_id': u'61965963',
@@ -397,8 +380,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Berger András',
             'name2': u'Berger András',
             'phone1': u'202641416',
-            'remarks': (u'Teljes szolg.szakad,kábelek ok,áramtalanítás nem '
-                        u'segít.Kérem nézzétek meg köszönöm'),
             'req_type': u'ACCESS',
             'sla_h': u'24',
             'street': u'Vár utca',
@@ -428,11 +409,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Borka Ferencné',
             'name2': u'Borka Ferencné',
             'phone1': u'305563745',
-            'remarks': (u'Ügyfél jelezte, hogy kb 2 hete folyamatosan megáll, '
-                        u'kifagy a kép és a hang is elmegy. Ha átkapcsolnak '
-                        u'úgy visszajön, de utána ismét jelentkezik a hiba. '
-                        u'Kábeleket ellenõrizte, újraindítás nem segít. '
-                        u'Kérem nézzétek meg, köszönöm.'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'Fácán köz',
@@ -460,10 +436,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Gõteborgs Food Zrt',
             'name2': u'Gõteborgs Food Zrt',
             'phone1': u'302413923',
-            'remarks': (u'Ügyfél jelezte adatforgalmi hibát tapasztalnak '
-                        u'internettel, VoCa rendben, kábelek rendben, '
-                        u'áramtalanítás nem segít, lan ledek sárgák, figyelést'
-                        u' indítottam, kérem vizsgáljátok, köszönöm.'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'Lakatos út',
@@ -491,7 +463,6 @@ class TestMailParsing(unittest.TestCase):
             'oss_id': u'473374444',
             'phone1': u'+3626355584',
             'phone2': u'26355584',
-            'remarks': '',
             'req_type': u'Mûszaki Hozzáférés - [LESZ] - ADSL_TPV_REZ',
             'street': u'Rákóczi utca',
             'task_type': u'L-MDF - Multiservice Point [SPA]',
@@ -519,8 +490,6 @@ class TestMailParsing(unittest.TestCase):
             'oss_id': u'704168455',
             'phone1': u'+36304006868',
             'phone2': u'26630376',
-            'remarks': (u'Az ügyfél jelezet, hogy nincs se fúrója, se '
-                        u'hosszabbítója, szerszámok legyenek a kollégánál.'),
             'req_type': u'Mûszaki Hozzáférés - [FEL] - KOAX',
             'street': u'Madár utca',
             'task_type': (u'L-Helyszíni áthelyezés '
@@ -547,7 +516,6 @@ class TestMailParsing(unittest.TestCase):
             'oss_id': u'824723727',
             'phone1': u'+36204989425',
             'phone2': u'26376679',
-            'remarks': u'Nap utca sarok',
             'req_type': u'Mûszaki Hozzáférés - [FEL] - KOAX',
             'street': u'Csillag sétány',
             'task_type': u'L-Helyszíni létesítés (KOAX) [SPA]',
@@ -573,8 +541,6 @@ class TestMailParsing(unittest.TestCase):
             'oss_id': u'468104124',
             'phone1': u'+36301237896',
             'phone2': u'13492370',
-            'remarks': (u'efi egy öregnéni, kéri, hogy kolléga hosszan '
-                        u'csengessen amíg bele nem szól a kaputelefonba'),
             'req_type': u'Mûszaki Hozzáférés - [LESZ] - TPV_REZ',
             'street': u'Visegrádi utca',
             'task_type': (u'L-Vonalépítés - Multiservice Point '
@@ -599,8 +565,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Gáli János',
             'name2': u'GÁLI JÁNOS',
             'phone1': u'204214878',
-            'remarks': (u'AD SZÁM: A0466150 204214878 NINCS NET, ÁRAMT. KÉSZ, '
-                        u'ROUTER NÉLKÜL SINCS KAPCSOLAT.'),
             'street': u'Madarász Viktor utca',
             'task_type': u'H-Internet hibaelhárítás (TMSzK)',
             'ticket_id': u'62107940',
@@ -625,7 +589,6 @@ class TestMailParsing(unittest.TestCase):
             'oss_id': u'479007861',
             'phone1': u'+3613208952',
             'phone2': u'13208952',
-            'remarks': '',
             'req_type': u'Mûszaki Hozzáférés - [LESZ] - TPV_REZ',
             'street': u'Visegrádi utca',
             'task_type': (u'L-Vonalépítés - Multiservice Point '
@@ -659,9 +622,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Szuhánszky Zsuzsanna',
             'name2': u'Skornyák Ferenc',
             'phone1': u'208011888',
-            'remarks': (u'Ügyfélnek lassú az internet,újraindítás nem segít,'
-                        u'2-3 mb-et mér kábelesen,kérem nézzétek meg '
-                        u'köszönöm'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'507. utca',
@@ -696,8 +656,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Hasznos Zsuzsa',
             'name2': u'Hasznos Zsuzsa',
             'phone1': u'202652318',
-            'remarks': (u'Gyenge jel mindkét stb-n. Kábelek ok. Áramtalanítás '
-                        u'nem segít. Kérem nézzétek meg. Köszönöm!'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'Karinthy Frigyes út',
@@ -732,9 +690,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Balogh István',
             'name2': u'Balogh István',
             'phone1': u'302284276',
-            'remarks': (u'Ügyfél jelezte, hogy mindkét STB elromlott, az egyik'
-                        u' nem kapcsol be, a másik pedig megáll bootolásnál. '
-                        u'Áramtalanítás nem segít. Kérem nézzétek meg!'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'Széchenyi út',
@@ -766,7 +721,6 @@ class TestMailParsing(unittest.TestCase):
             'order_num': u'2d343433343434393336353636313539',
             'oss_id': u'825351637',
             'phone1': u'+36304104835',
-            'remarks': '',
             'req_type': u'Mûszaki Hozzáférés - [FEL] - KOAX',
             'street': u'Szent Flórián utca',
             'task_type': u'L-Helyszíni létesítés (KOAX) [SPA]',
@@ -796,7 +750,6 @@ class TestMailParsing(unittest.TestCase):
             ],
             'phone1': u'+36706135717',
             'street': u'Rózsa utca',
-            'remarks': u'Eredménykód: OK Elõminõsítés/kap.fogl sikeres',
             'task_type': (u'L-Vonal + NDSL kiépítése L-MDF bekötés NAKED'),
             'task_type_list': [u'L-Vonal + NDSL kiépítése',
                                u'L-MDF bekötés NAKED'],
@@ -827,7 +780,6 @@ class TestMailParsing(unittest.TestCase):
             'order_num': u'2d323639333337323135383232343239',
             'oss_id': u'825657672',
             'phone1': u'+36306610993',
-            'remarks': '',
             'req_type': u'Mûszaki Hozzáférés - [FEL] - ADSL_REZ',
             'street': u'Széchenyi István tér',
             'task_type': (u'L-Vonalépítés [SPA] L-MDF Felszerelés (Host) '
@@ -865,10 +817,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Antal Attila',
             'name2': u'Antal Attila',
             'phone1': u'703190227',
-            'remarks': (u'Interaktív funkciók hibája, felvételeket nem lehet '
-                        u'elindítani + lejátszani. Kábelek rb., restart + '
-                        u'menübõl restart nem oldotta meg, kérem nézzétek meg,'
-                        u' köszönöm.'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'Vízpart körút',
@@ -895,7 +843,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Magyar Úszó Szövetség',
             'order_num': u'7275914',
             'phone1': u'+36303386916',
-            'remarks': u'Eredménykód: OK Elõminõsítés/kap.fogl sikeres',
             'street': u'Hajós Alfréd sétány',
             'task_type': u'L-Szolgáltatás üzembehelyezés (Réz)',
             'ticket_id': u'63072441-1014',
@@ -921,7 +868,6 @@ class TestMailParsing(unittest.TestCase):
             'order_num': u'2d313333303039383838313836333037',
             'oss_id': u'801137263',
             'phone1': u'+36306191456',
-            'remarks': '',
             'req_type': u'Műszaki Hozzáférés - [FEL] - GPON_OPTIKA',
             'street': u'Vadász utca',
             'task_type': u'L-MDF - Multiservice Point [SPA]',
@@ -949,7 +895,6 @@ class TestMailParsing(unittest.TestCase):
             'oss_id': u'825295282',
             'phone1': u'205596925',
             'phone2': u'56557198',
-            'remarks': '',
             'req_type': u'Műszaki Hozzáférés - [FEL] - GPON_OPTIKA',
             'street': u'Vadvirág',
             'task_type': (u'L-Vonalépítés (Optikai hálózat) [SPA] L-Helyszíni'
@@ -978,7 +923,6 @@ class TestMailParsing(unittest.TestCase):
             'devices': [{'device_sn': u'NE001ARI',
                          'device_type': u'ISDN2_1 IS2 NetMod INTRACOM'}],
             'phone1': u'+36204556932',
-            'remarks': u'Eredménykód: OK Előminősítés/kap.fogl sikeres',
             'street': u'Deák Ferenc utca',
             'task_type': (u'L-Szolgáltatás üzembehelyezés (Optika)'
                           u' L-Vonalépítés (Optikai hálózat)'),
@@ -1011,9 +955,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Jánószki István',
             'name2': u'Jánószki István',
             'phone1': u'209818671',
-            'remarks': (u'Ügyfél lassulást tapasztal internet szolgáltatásán.'
-                        u' Ping 25% pocket loss. Kérem nézzétek meg, '
-                        u'köszönöm.'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'PESTI ÚT',
@@ -1039,9 +980,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Zolnai Krisztina',
             'name2': u'Zolnai Krisztina',
             'phone1': u'705881068',
-            'remarks': (u'STB kártyahiba. Újraindítás nem segít, kábelek '
-                        u'rendben. Kérem, nézzétek meg, köszönöm. Kártyaszám:'
-                        u' 02063043174-8 CHIP ID: 00595257570'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'Nyári Nagy Pál utca',
@@ -1067,9 +1005,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Salamon Imre',
             'name2': u'Salamon Imre',
             'phone1': u'304553480',
-            'remarks': (u'Lassú és szakadozó internet. KTVadminban is rossz '
-                        u'jeladatok. Újraindítás nem segített. Kábelek ok. '
-                        u'Kérem nézzétek meg, köszönöm.'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'Gyöngfüzér utca',
@@ -1100,8 +1035,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Tóth Roland',
             'name2': u'Tóth Roland',
             'phone1': u'303583973',
-            'remarks': (u'Az ügyfélnél minden csatornán multicast hiba van. '
-                        u'Újraindítás nem segít. Kérem nézzétek meg, köszööm'),
             'req_type': u'SERVICE',
             'sla_h': u'24',
             'street': u'TÁNCSICS MIHÁLY ÚT',
@@ -1132,11 +1065,6 @@ class TestMailParsing(unittest.TestCase):
             'name1': u'Martincsevics Györgyné',
             'name2': u'Martincsevics Györgyné',
             'phone1': u'703185142',
-            'remarks': (u'Ha felveszi a kagylót foglalt, ha hívják a számot a'
-                        u' vonalban kicseng, helyszínen nem. Hívást kezdemény'
-                        u'ezni/fogadni nem tud. Készülék ellenőrizve.HGW '
-                        u'áramtalanítás nem segít. Idős hölgy ezért szeretne'
-                        u' helyszíni hibaelhárítást.'),
             'req_type': u'SERVICE',
             'sla_h': u'72',
             'street': u'Perec utca',
@@ -1168,7 +1096,6 @@ class TestMailParsing(unittest.TestCase):
             'mt_id': u'469448568',
             'name1': u'Kézdi Miklós Pálné',
             'phone1': u'+36301975740',
-            'remarks': u'Eredménykód: OK Elõminõsítés/kap.fogl sikeres',
             'street': u'Dózsa György út',
             'ticket_id': u'63290978-795',
             'task_type': u'Munkaelrendelés',
@@ -1192,7 +1119,6 @@ class TestMailParsing(unittest.TestCase):
             'mt_id': u'823222159',
             'name1': u'Góra Tamás Zsolt',
             'phone1': u'+36309978426',
-            'remarks': u'Góra Zsolt Tamás telefon: mobil: +36309978426',
             'street': u'Szabadság utca',
             'task_type': u'L-Szolgáltatás üzembehelyezés (Optika)',
             'ticket_id': u'63666853-1035',
@@ -1232,7 +1158,6 @@ class TestMailParsing(unittest.TestCase):
             'oss_id': u'474831361',
             'phone1': u'+36705680851',
             'phone2': u'56431423',
-            'remarks': '',
             'req_type': u'Műszaki Hozzáférés - [LESZ] - MSAN_REZ',
             'street': u'Tópart út',
             'task_type': (u'L-Vonalépítés - Multiservice Point [SPA] '
@@ -1270,7 +1195,6 @@ class TestMailParsing(unittest.TestCase):
             'oss_id': u'706215345',
             'phone1': u'+36706658716',
             'phone2': u'56402818',
-            'remarks': u'efi kéri, hogy kolléga érkezés előtt fél órával keresse',
             'req_type': u'Műszaki Hozzáférés - [LESZ] - ADSL_REZ',
             'street': u'Széchenyi út',
             'task_type': (u'L-Vonalépítés - Multiservice Point [SPA] '
@@ -1313,13 +1237,48 @@ class TestMailParsing(unittest.TestCase):
             'oss_id': u'691313039',
             'phone1': u'+36703492323',
             'phone2': u'56950615',
-            'remarks': '',
             'req_type': u'Műszaki Hozzáférés - [MÓD] - ADSL_REZ',
             'street': u'Jókai út',
             'task_type': u'L-Helyszíni Feladat MULTI-DVBS [SPA]',
             'ticket_id': u'63878315-490',
             'title': u'Szerelési lap',
             'zip': u'5052'
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file43(self):
+        """
+        Test extracting devices and data with multiple <html> tags in the
+        document. Sweet
+        """
+        f = self._get_mail_file('test43.html')
+        output = self.parser.parse(f)
+        # PPrinter(indent=0).pprint(output)
+        expected = {
+            'a_num': u'K3621277',
+            'addr1': u'5000 Szolnok Kert utca 32',
+            'city': u'Szolnok',
+            'devices': [
+                {'device_sn': u'CJZA03919102559',
+                 'device_type': u'ADB-5800S -HD AVC DVB-S SET TOP BOX (MT)'},
+                {'device_sn': u'CJZA03919102560',
+                 'device_type': u'ADB-5800S -HD AVC DVB-S SET TOP BOX (MT)'},
+                {'device_sn': u'CJZA03919102562',
+                 'device_type': u'ADB-5800S -HD AVC DVB-S SET TOP BOX (MT)'}],
+            'house_num': u'32',
+            'mt_id': u'482898501',
+            'name1': u'Táncosné Volter Mária',
+            'name2': u'Táncos László',
+            'phone1': u'203976402',
+            'req_type': u'SERVICE',
+            'sla_h': u'24',
+            'street': u'Kert utca',
+            'task_id': u'785',
+            'task_type': u'H-DVBS Hibaelhárítás SAT (HSZI SZK) [NG]',
+            'ticket_id': u'63867244.2',
+            'title': u'Hibaelhárítási munkalap',
+            'zip': u'5000'
         }
 
         self.assertDictEqual(output, expected)
