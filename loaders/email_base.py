@@ -152,7 +152,7 @@ class EmailLoaderBase(LoaderBase):
         path = self.STATUS_DIR_MAP[mail.status]
         filename = os.path.join(path, mail.filename)
         try:
-            with codecs.open(filename, 'w') as mail_file:
+            with codecs.open(filename, 'w', 'utf-8') as mail_file:
                 mail_file.write(mail.pretty)
                 self.logger.info(u'File kiírva: {}'.format(mail_file.name))
         except Exception as e:
