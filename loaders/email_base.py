@@ -106,7 +106,7 @@ class EmailLoaderBase(LoaderBase):
                 elif mail.status == mail.NOTPROC:
                     self._notproc(mail)
                 elif mail.status == mail.DUPLICATE:
-                    self._duplicate()
+                    self._duplicate(mail)
 
         self.logger.info(u'--- Email feldolgozás kész {} hibaval ---'
                          u''.format(error_count))

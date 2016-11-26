@@ -28,5 +28,5 @@ class FileUpload(MunkaLoader):
             cls = getattr(loader_module, loader_cls_name)
             self.dataloaders.append(cls(self.logger))
 
-    def _duplicate(self):
+    def _duplicate(self, *args):
         pass

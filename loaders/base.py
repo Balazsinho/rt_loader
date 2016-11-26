@@ -45,7 +45,7 @@ class LoaderBase(object):
     # Processing status forks
     # ========================================================================
 
-    def _duplicate(self):
+    def _duplicate(self, *args):
         self._duplicates += 1
         if self._duplicates > self._args.duplicates:
             raise StopException('Duplikaciok miatt leall')
