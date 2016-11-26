@@ -26,5 +26,10 @@ class ErrorRetry(FileUpload):
         filename = os.path.join(self.email_acc, mail.filename)
         os.remove(filename)
 
+    def _duplicate(self, mail):
+        # super(ErrorRetry, self)._success(mail)
+        filename = os.path.join(self.email_acc, mail.filename)
+        os.remove(filename)
+
     def _post_process(self, new_mails):
         pass
