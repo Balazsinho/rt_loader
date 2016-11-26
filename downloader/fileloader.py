@@ -18,7 +18,7 @@ class FileLoader(object):
 
         for idx, full_path in enumerate(msg_files):
             filename = os.path.basename(full_path)
-            content = codecs.open(full_path).read()
+            content = codecs.open(full_path).readlines()
             yield Mail(content, idx, filename)
 
     def delete_mails(self, directory, idxs):
