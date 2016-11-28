@@ -70,6 +70,7 @@ if __name__ == '__main__':
         except ErrorsDuringProcess:
             exit_code = 1
         except Exception as e:
+            exit_code = 1
             logger.error(u'Hiba a feldolgozás közben: {}'.format(e))
             traceback.print_exc()
         finally:
