@@ -32,13 +32,13 @@ ACC_INFO = 'info'
 
 EMAIL_ACCS = {
     ACC_MUNKA: {
-        'host': 'mail.rovid-tav.hu',
+        'host': '87.229.98.171',
         'port': 110,
         'user': 'munka@rovid-tav.hu',
         'passwd': 'hu7EyieW',
     },
     ACC_INFO: {
-        'host': 'mail.rovid-tav.hu',
+        'host': '87.229.98.171',
         'port': 110,
         'user': 'info@rovid-tav.hu',
         'passwd': 'eiTa6wah',
