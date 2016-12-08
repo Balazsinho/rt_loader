@@ -28,3 +28,6 @@ class InfoLoader(EmailLoaderBase):
                               ''.format(mail.mail_from))
             return True
         return False
+
+    def _post_process(self, new_mails):
+        pass
