@@ -283,7 +283,7 @@ def _extract_devices_method2(soup, extracted_data):
                     except IndexError:
                         value = None
                     if value:
-                        device[field] = value
+                        device[field] = value.strip()
 
             if Fields.DEV_SN in device:
                 devices.append(device)
@@ -306,7 +306,7 @@ def _extract_devices_method3(soup, extracted_data):
         for idx, t in enumerate(tipus):
             if vonalkod[idx] not in serials:
                 device = {
-                    Fields.DEV_TYPE: t,
+                    Fields.DEV_TYPE: (t or '').strip(),
                     Fields.DEV_SN: vonalkod[idx],
                 }
                 serials.add(vonalkod[idx])
@@ -329,7 +329,7 @@ def _extract_devices_method4(soup, extracted_data):
         for idx, t in enumerate(tipus):
             if t and sns[idx]:
                 device = {
-                    Fields.DEV_TYPE: t,
+                    Fields.DEV_TYPE: (t or '').strip(),
                     Fields.DEV_SN: sns[idx],
                 }
                 serials.add(sns[idx])
