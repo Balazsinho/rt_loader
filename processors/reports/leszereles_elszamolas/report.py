@@ -158,8 +158,12 @@ class LeszerelesElsz(ReportBase):
                 rows = cursor.fetchall()
                 conn.close()
                 best_row = rows[-1]
-                best_row['MtAzon'] = best_row['MtAzon'].strip('xb')
-                report_data_cleaned.append(best_row)
+                row['uNev'] = best_row['uNev']
+                row['mtAzon'] = best_row['mtAzon'].strip('xb')
+                row['tNev'] = best_row['tNev']
+                row['tIrsz'] = best_row['tIrsz']
+                row['Utca'] = best_row['Utca']
+                report_data_cleaned.append(row)
             else:
                 report_data_cleaned.append(row)
 
