@@ -149,6 +149,7 @@ class LeszerelesElsz(ReportBase):
                     ON [u_mhtId] = [mhtId]
                 LEFT JOIN [leszereles].[dbo].[Raklapok] ON  [rlId] = [bk_rlId]
                 WHERE Box='{}'
+                AND Beveve IS NOT NULL
                 ORDER BY Felvitel
                 '''.format(row['Box'])
                 conn = self._connect_db(self.LESZ_DB, as_dict=True)
