@@ -153,7 +153,7 @@ class LeszerelesElsz(ReportBase):
                 '''.format(row['Box'])
                 conn = self._connect_db(self.LESZ_DB, as_dict=True)
                 cursor = conn.cursor()
-                cursor.execute(select_stmt)
+                cursor.execute(stmt)
                 rows = cursor.fetchall()
                 conn.close()
                 best_row = rows[-1]
