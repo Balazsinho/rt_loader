@@ -258,7 +258,7 @@ class LeszerelesElsz(ReportBase):
             col = start_col + i*5
             box = data[i]['box']
             kartya = data[i]['kartya']
-            tipus = data[i]['tipus']
+            tipus = data[i]['tipus'] or ''
             remote_stbs = ('adb', 'co', 'gcr', 'huawei', 'intek', 'isb', 'x',
                            'sagem')
             remote_stbs_excl = ('sagemcom')
