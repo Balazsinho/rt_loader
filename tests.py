@@ -1283,6 +1283,25 @@ class TestMailParsing(unittest.TestCase):
 
         self.assertDictEqual(output, expected)
 
+    def test_file44(self):
+        f = self._get_mail_file('test44.html')
+        output = self.parser.parse(f)
+        PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'5451 ÖCSÖD Ady Endre út 38',
+            'city': u'Öcsöd',
+            'house_num': u'38',
+            'mt_id': u'123761256',
+            'name1': u'Hegedűs Erika',
+            'street': u'Ady Endre út',
+            'task_type': u'L-Vonal + NDSL kiépítése',
+            'ticket_id': u'65965784-897',
+            'title': u'Munkaelrendelés',
+            'zip': u'5451'
+        }
+
+        self.assertDictEqual(output, expected)
+
 
 if __name__ == '__main__':
     unittest.main()

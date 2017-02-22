@@ -351,6 +351,43 @@ def extract_title(soup, extracted_data):
 
     return result
 
+
+def extract_task_nr(soup, extracted_data):
+    """
+    Extracts the raw task NR when they send it in a row that has 3 cells,
+    the first one containing "Munkarendeles"
+    """
+    result = {}
+    for td in soup.find_all('td'):
+        texts = map(clean, filter(trash, td.find_all(text=True)))
+        if len(texts) == 1 and \
+                unidecode(texts[0]) == 'Jegyazonosito-Task Nr':
+            row = map(clean, filter(trash, td.parent.find_all(text=True)))
+            if len(row) != 3:
+                break
+            result = {Fields.TICKET_ID: row[2]}
+            break
+
+    return result
+
+
+def extract_client_id(soup, extracted_data):
+    """
+    Extracts the raw client ID when they send it in a row that has 5 cells
+    e.g. test44
+    """
+    result = {}
+    for td in soup.find_all('td'):
+        texts = map(clean, filter(trash, td.find_all(text=True)))
+        if len(texts) == 1 and \
+                unidecode(texts[0]) == 'Ugyfelszam':
+            row = map(clean, filter(trash, td.parent.find_all(text=True)))
+            result = {Fields.MT_ID: row[-1]}
+            break
+
+    return result
+
+
 # =============================================================================
 # DATA CLEANERS ON THE FINAL DATA
 # =============================================================================

@@ -15,6 +15,8 @@ class MailParser(object):
         postparsers.extract_collectable_money,
         postparsers.extract_address,
         postparsers.extract_bracketed,
+        postparsers.extract_task_nr,
+        postparsers.extract_client_id,
         postparsers.extract_title,
     )
 
@@ -173,6 +175,6 @@ class MailParser(object):
             title = self._extract_data_from_cell(title)
             title = title[0] if title else None
         else:
-            self.logger.debug('<title> mezőt nem találtam')
+            self.logger.debug('<title> mezot nem talaltam')
 
         return title
