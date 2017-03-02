@@ -26,7 +26,7 @@ class NewDb(object):
         f = urllib2.urlopen(req)
         result = f.read()
         f.close()
-        result = json.loads(json.loads(result))
+        result = json.loads(result)
         if 'error' in result:
             if str(result['error']).startswith('duplicate ticket'):
                 raise DuplicateItemError(u'A {} jegy azonosító már bent van az'
