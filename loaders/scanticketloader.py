@@ -39,39 +39,46 @@ class ScanTicketLoader(LoaderBase):
                 if filename.startswith('hiba_'):
                     self.logger.info('Fajl atugrasa: {}')
                     continue
-                task_nr, _ = self.parser.task_nr_from_raw(raw_file)
+                ticket_ids, _ = self.parser.task_nr_from_raw(raw_file)
                 raw_file.seek(0)
                 raw_data = raw_file.read()
 
-            if not task_nr:
+            if not ticket_ids:
                 self.logger.error('Nem talaltam WFMS azonositot: {}'
                                   ''.format(full_path))
                 os.rename(full_path, os.path.join(path, 'hiba_' + filename))
                 continue
 
             data = {
-                Fields.TICKET_ID: task_nr,
-                'attachment_name': filename,
+                'attachment_name': u'Kitöltött munkalap.pdf',
                 'attachment_content': base64.b64encode(raw_data),
             }
 
             uploaded = False
             for l in self.dataloaders:
-                try:
-                    l.upload_attachment(data)
-                    uploaded = True
-                except MissingItemError:
-                    self.logger.warning('Nincs ilyen jegy: {}'
-                                        ''.format(task_nr))
-                    os.rename(full_path, os.path.join(path,
-                                                      'hiba_' + filename))
-                except Exception as e:
-                    self.logger.error('Hiba a feltoltes ({}) soran: {}'
-                                      ''.format(task_nr, e))
+                for ticket_id in ticket_ids:
+                    data[Fields.TICKET_ID] = ticket_id
+                    try:
+                        l.upload_attachment(data)
+                        uploaded = True
+                        self.logger.info('Jegy feltoltve: {}'
+                                         ''.format(ticket_id))
+                    except MissingItemError:
+                        self.logger.warning('Nincs ilyen jegy: {}'
+                                            ''.format(ticket_id))
+                    except Exception as e:
+                        self.logger.error('Hiba a feltoltes ({}) soran: {}'
+                                          ''.format(ticket_id, e))
 
-            if uploaded:
-                try:
-                    os.remove(full_path)
-                except Exception as e:
-                    self.logger.error('Hiba a torles ({}) soran: {}'
-                                      ''.format(task_nr, e))
+                if uploaded:
+                    try:
+                        os.remove(full_path)
+                    except Exception as e:
+                        self.logger.error('Hiba a torles ({}) soran: {}'
+                                          ''.format(ticket_id, e))
+                        uploaded = False
+                    finally:
+                        break
+
+            if not uploaded:
+                os.rename(full_path, os.path.join(path, 'hiba_' + filename))
