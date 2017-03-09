@@ -38,6 +38,7 @@ class ScanTicketLoader(LoaderBase):
             with codecs.open(full_path) as raw_file:
                 if filename.startswith('hiba_'):
                     self.logger.info('Fajl atugrasa: {}')
+                    continue
                 task_nr, _ = self.parser.task_nr_from_raw(raw_file)
                 raw_file.seek(0)
                 raw_data = raw_file.read()
@@ -62,6 +63,8 @@ class ScanTicketLoader(LoaderBase):
                 except MissingItemError:
                     self.logger.warning('Nincs ilyen jegy: {}'
                                         ''.format(task_nr))
+                    os.rename(full_path, os.path.join(path,
+                                                      'hiba_' + filename))
                 except Exception as e:
                     self.logger.error('Hiba a feltoltes ({}) soran: {}'
                                       ''.format(task_nr, e))
