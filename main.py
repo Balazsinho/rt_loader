@@ -14,14 +14,16 @@ from loaders.info import InfoLoader
 from loaders.phoneupdate import PhoneUpdateLoader
 from loaders.file_upload import FileUpload
 from loaders.error_retry import ErrorRetry
+from loaders.scanticketloader import ScanTicketLoader
 
 
 LOADERS = (
-    PhoneUpdateLoader,
+    # PhoneUpdateLoader,
     InfoLoader,
     MunkaLoader,
     FileUpload,
     ErrorRetry,
+    ScanTicketLoader,
 )
 
 

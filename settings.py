@@ -17,6 +17,8 @@ MAIL_UPLOAD_DIR = os.path.join(PROJECT_DIR, 'files', 'mail_upload')
 
 REPORT_OUTPUT_DIR = os.path.join(PROJECT_DIR, 'reports')
 
+SCAN_DIR = os.path.join(PROJECT_DIR, 'files', 'scans')
+
 GYURI_DB = {
     'server': 'SZERVER',
     'port': '8778',
@@ -59,6 +61,7 @@ LOADERS = {
     'info': (NEWDB,),
     'munka': (NEWDB,),
     'fileupload': (NEWDB,),
+    'scan': (NEWDB,),
 }
 
 # =============================================================================

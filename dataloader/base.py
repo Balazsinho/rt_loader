@@ -11,6 +11,10 @@ class DuplicateItemError(Exception):
     pass
 
 
+class MissingItemError(Exception):
+    pass
+
+
 class DataLoaderBase(object):
 
     COMMON_DB = 'CommonFGY'
