@@ -63,6 +63,7 @@ class ScanTicketLoader(LoaderBase):
                         uploaded = True
                         self.logger.info('Jegy feltoltve: {}'
                                          ''.format(ticket_id))
+                        break
                     except MissingItemError:
                         self.logger.warning('Nincs ilyen jegy: {}'
                                             ''.format(ticket_id))
