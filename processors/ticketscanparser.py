@@ -27,8 +27,8 @@ class TicketScanParser(ScanParserBase):
             postfix = None
 
         if postfix:
-            return ['{}.{}'.format(wfms_id, postfix),
-                    '{}-{}'.format(wfms_id, postfix)]
+            return ['{}-{}'.format(wfms_id, postfix),
+                    '{}.{}'.format(wfms_id, postfix)]
         elif wfms_id:
             return [wfms_id]
         else:
