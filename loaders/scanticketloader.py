@@ -37,7 +37,7 @@ class ScanTicketLoader(LoaderBase):
             path, filename = os.path.split(full_path)
             with codecs.open(full_path) as raw_file:
                 if filename.startswith('hiba_'):
-                    self.logger.info('Fajl atugrasa: {}')
+                    self.logger.info('Fajl atugrasa: {}'.format(filename))
                     continue
                 ticket_ids, _ = self.parser.task_nr_from_raw(raw_file)
                 raw_file.seek(0)
