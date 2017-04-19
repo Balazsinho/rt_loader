@@ -22,6 +22,17 @@ class TicketScanParser(ScanParserBase):
                     wfms_id = temp_id
                     longest_id = len(temp_id)
 
+        if not wfms_id:
+            """
+            We do the lookup with brute force but less accuracy:
+            Anything that builds up as 8 digits dash or dot a few more digits
+            will do
+            """
+            wfms_ids = re.findall(r'(\d{8}[\-\.]\d{1,4})',
+                                  raw_extr, re.I)
+            wfms_ids = map(lambda word: re.sub('[\-\.]', '', word), wfms_ids)
+            wfms_id = wfms_ids[0] if wfms_ids else None
+
         try:
             wfms_id, postfix = wfms_id[:8], wfms_id[8:]
         except:

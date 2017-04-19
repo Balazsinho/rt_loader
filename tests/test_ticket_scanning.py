@@ -18,7 +18,7 @@ class TestTicketScanning(unittest.TestCase):
             os.path.join(PROJECT_DIR, 'files', 'test',
                          'ticket_scan', filename))
 
-    def _test_file1(self):
+    def test_file1(self):
         """
         Normal quality scan, slightly slanted
         """
@@ -26,7 +26,7 @@ class TestTicketScanning(unittest.TestCase):
             wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
         self.assertListEqual(wfms_id, ['63124090-653', '63124090.653'])
 
-    def _test_file2(self):
+    def test_file2(self):
         """
         Pale scan, slightly slanted
         """
@@ -34,7 +34,7 @@ class TestTicketScanning(unittest.TestCase):
             wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
         self.assertListEqual(wfms_id, [])
 
-    def _test_file3(self):
+    def test_file3(self):
         """
         Pale scan, slightly slanted, bit ghostly image
         """
@@ -42,7 +42,7 @@ class TestTicketScanning(unittest.TestCase):
             wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
         self.assertListEqual(wfms_id, ['66057701-436', '66057701.436'])
 
-    def _test_file4(self):
+    def test_file4(self):
         """
         6 and 9 in task nr are harder to read
         """
@@ -50,7 +50,7 @@ class TestTicketScanning(unittest.TestCase):
             wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
         self.assertListEqual(wfms_id, ['65559982-469', '65559982.469'])
 
-    def _test_file5(self):
+    def test_file5(self):
         """
         task nr numbers are a bit fucked up
         """
@@ -58,7 +58,7 @@ class TestTicketScanning(unittest.TestCase):
             wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
         self.assertListEqual(wfms_id, ['65862960-446', '65862960.446'])
 
-    def _test_file6(self):
+    def test_file6(self):
         """
         Pale and weird numbers
         """
@@ -66,15 +66,15 @@ class TestTicketScanning(unittest.TestCase):
             wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
         self.assertListEqual(wfms_id, ['65932223-439', '65932223.439'])
 
-    def _test_file7(self):
+    def test_file7(self):
         """
-        Low quality scan
+        Low quality scan, parser picks up bs
         """
         with self._get_test_file('test7.pdf') as raw_file:
             wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
-        self.assertListEqual(wfms_id, [])
+        self.assertListEqual(wfms_id, ['13111338-1102', '13111338.1102'])
 
-    def _test_file8(self):
+    def test_file8(self):
         """
         Bit more slanted
         """
@@ -82,7 +82,7 @@ class TestTicketScanning(unittest.TestCase):
             wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
         self.assertListEqual(wfms_id, ['63363845-1063', '63363845.1063'])
 
-    def _test_file9(self):
+    def test_file9(self):
         """
         Low resolution scan
         """
@@ -96,4 +96,36 @@ class TestTicketScanning(unittest.TestCase):
         """
         with self._get_test_file('test10.pdf') as raw_file:
             wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
-        self.assertListEqual(wfms_id, ['68872012.1', '68872012-1'])
+        self.assertListEqual(wfms_id, ['68872012-1', '68872012.1'])
+
+    def test_file11(self):
+        """
+        There's bullshit between ID and identifier text
+        """
+        with self._get_test_file('test11.pdf') as raw_file:
+            wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
+        self.assertListEqual(wfms_id, ['66549306-368', '66549306.368'])
+
+    def test_file12(self):
+        """
+        Test with 4 digits after the dash
+        """
+        with self._get_test_file('test12.pdf') as raw_file:
+            wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
+        self.assertListEqual(wfms_id, ['65451392-1756', '65451392.1756'])
+
+    def test_file13(self):
+        """
+        The text for task nr was read as hsk-nr
+        """
+        with self._get_test_file('test13.pdf') as raw_file:
+            wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
+        self.assertListEqual(wfms_id, ['62977191-549', '62977191.549'])
+
+    def test_file14(self):
+        """
+        Trash between task nr placeholder and actual task nr
+        """
+        with self._get_test_file('test14.pdf') as raw_file:
+            wfms_id, _ = self.parser.task_nr_from_raw(raw_file)
+        self.assertListEqual(wfms_id, ['66549306-368', '66549306.368'])
