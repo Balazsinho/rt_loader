@@ -9,7 +9,8 @@ class TicketScanParser(ScanParserBase):
         """
         Extracts the WFMS ID from the raw OCR data
         """
-        possible_keywords = (r'ask\snr', r'hiba[ij]egy\sazon\S+')
+        possible_keywords = (r'sk\snr',
+                             r'hiba[ij]egy\sazon\S+')
         longest_id = 0
         wfms_id = None
         for kw in possible_keywords:
