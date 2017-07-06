@@ -108,7 +108,7 @@ class LeszerelesElsz(ReportBase):
                    self._ey, self._em, self._ed)
 
         self.logger.info('Adatok kikerese folyamatban...')
-        conn = self._connect_db(self.LESZ_DB, as_dict=True)
+        conn = self._connect_db(self.LESZ_DB, as_dict=True, charset='LATIN-1')
         cursor = conn.cursor()
         cursor.execute(select_stmt)
         report_data = cursor.fetchall()
@@ -152,7 +152,7 @@ class LeszerelesElsz(ReportBase):
                 AND Beveve IS NOT NULL
                 ORDER BY Felvitel
                 '''.format(row['Box'])
-                conn = self._connect_db(self.LESZ_DB, as_dict=True)
+                conn = self._connect_db(self.LESZ_DB, as_dict=True, charset='LATIN-1')
                 cursor = conn.cursor()
                 cursor.execute(stmt)
                 rows = cursor.fetchall()
