@@ -22,8 +22,8 @@ class LeszerelesTicket(Leszereles):
     def _insert_data(self, data, loc_id, default_mech_id):
         stmt = ('INSERT dbo.Ugyfelek (uNev, MtAzon, u_tAzon, Utca, HazSzam,'
                 'Felvitel, Kiadva, Lezarva, u_szAzon, uMegjegyzes, '
-                'ugyf_jeloles, Telszam, FromEventus)'
-                'VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)')
+                'ugyf_jeloles, Telszam, FromEventus, JegyAzon)'
+                'VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)')
 
         conn = self._connect_db(self._db)
         cursor = conn.cursor()
@@ -56,6 +56,7 @@ class LeszerelesTicket(Leszereles):
                 NULL,
                 data[Fields.PHONE1],
                 '1',
+                data[Fields.TICKET_ID],
             )
         except KeyError as e:
             raise Exception('Hianyzo adat a feldolgozashoz: {}'.format(e))
