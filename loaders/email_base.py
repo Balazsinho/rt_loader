@@ -25,6 +25,9 @@ class EmailLoaderBase(LoaderBase):
     def _filter(self, mail):
         pass
 
+    def _post_process(self, mails):
+        pass
+
     def _extract(self, mail):
         self.logger.info(u'--- Feldolgozás alatt: {}'
                          u''.format(mail.filename))
