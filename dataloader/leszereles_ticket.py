@@ -30,14 +30,14 @@ class LeszerelesTicket(Leszereles):
 
         cursor.execute("SELECT uAzon FROM Ugyfelek WHERE JegyAzon='{}'"
                        "".format(data[Fields.TICKET_ID]))
-        client_id = cursor.fetchone()[0]
-        if client_id > 0:
+        client_id = cursor.fetchone()
+        if client_id:
             # Fix missing ticket from database
             cursor.execute('SELECT COUNT(1) dbo.ugyfelek_mail'
-                           'WHERE um_uAzon={}'.format(client_id))
-            mail_present = cursor.fetchone()[0]
+                           'WHERE um_uAzon={}'.format(client_id[0]))
+            mail_present = cursor.fetchone()
             if not mail_present:
-                self._insert_mail_content(client_id, mail_content)
+                self._insert_mail_content(client_id[0], mail_content)
 
             raise DuplicateItemError(u'A {} jegy azonosító már bent van az '
                                      u'adatbázisban'
