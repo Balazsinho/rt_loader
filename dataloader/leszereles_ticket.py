@@ -48,7 +48,7 @@ class LeszerelesTicket(Leszereles):
                 loc_id,
                 data[Fields.STREET],
                 data[Fields.HOUSE_NUM],
-                datetime.datetime.now(),
+                data.get(Fields.DATE_CREATED, datetime.datetime.now()),
                 NULL,
                 NULL,
                 default_mech_id,

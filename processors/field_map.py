@@ -30,6 +30,7 @@ USABLE_FIELDS = [
     ('Megrendelesszam', Fields.ORDER_NUM),
 
     ('WFMS jegy letrejotte', Fields.DATE_CREATED),
+    ('Beerkezes datuma', Fields.DATE_CREATED),
     ('Igeny rogzites datuma', Fields.DATE_CREATED),
     ('Egyeztetett idopont', Fields.AGREED_TIME),
 
