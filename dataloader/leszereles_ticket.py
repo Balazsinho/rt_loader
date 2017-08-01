@@ -13,13 +13,13 @@ class LeszerelesTicket(Leszereles):
         loc_id = self._get_loc_id(data)
         default_mech_id = self._get_default_mech_id()
         try:
-            client_id = self._insert_data(data, loc_id, default_mech_id)
+            client_id = self._insert_data(data, loc_id, default_mech_id, mail.html)
         except self.AlreadyExistsError:
             return None
         self._insert_devices(data, client_id)
         self._insert_mail_content(client_id, mail.html)
 
-    def _insert_data(self, data, loc_id, default_mech_id):
+    def _insert_data(self, data, loc_id, default_mech_id, mail_content):
         stmt = ('INSERT dbo.Ugyfelek (uNev, MtAzon, u_tAzon, Utca, HazSzam,'
                 'Felvitel, Kiadva, Lezarva, u_szAzon, uMegjegyzes, '
                 'ugyf_jeloles, Telszam, FromEventus, JegyAzon)'
@@ -28,10 +28,17 @@ class LeszerelesTicket(Leszereles):
         conn = self._connect_db(self._db)
         cursor = conn.cursor()
 
-        cursor.execute("SELECT COUNT(1) FROM Ugyfelek WHERE JegyAzon='{}'"
+        cursor.execute("SELECT uAzon FROM Ugyfelek WHERE JegyAzon='{}'"
                        "".format(data[Fields.TICKET_ID]))
-        ticket_id = cursor.fetchone()[0]
-        if ticket_id > 0:
+        client_id = cursor.fetchone()[0]
+        if client_id > 0:
+            # Fix missing ticket from database
+            cursor.execute('SELECT COUNT(1) dbo.ugyfelek_mail'
+                           'WHERE um_uAzon={}'.format(client_id))
+            mail_present = cursor.fetchone()[0]
+            if not mail_present:
+                self._insert_mail_content(client_id, mail_content)
+
             raise DuplicateItemError(u'A {} jegy azonosító már bent van az '
                                      u'adatbázisban'
                                      u''.format(data[Fields.TICKET_ID]))
