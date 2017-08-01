@@ -94,7 +94,7 @@ class EmailLoaderBase(LoaderBase):
 
             if self._args.raw:
                 for k, v in extracted_data.iteritems():
-                    print '{}: {}'.format(k, v)
+                    print u'{}: {}'.format(k, v)
                 self.logger.info(u'*** Következő rekord')
                 continue
 
