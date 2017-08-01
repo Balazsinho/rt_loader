@@ -61,7 +61,7 @@ class LeszerelesTicket(Leszereles):
                 default_mech_id,
                 data.get(Fields.REMARKS, NULL),
                 NULL,
-                data[Fields.PHONE1],
+                data.get(Fields.PHONE1),
                 '1',
                 data[Fields.TICKET_ID],
             )
