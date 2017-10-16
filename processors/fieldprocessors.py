@@ -338,6 +338,17 @@ def _extract_devices_method4(soup, extracted_data):
     return devices
 
 
+def extract_agreed_time(soup, extracted_data):
+    time_from = _extract_col_adj_values(soup, 'Egyeztetett ido (-tol)')
+    if time_from:
+        time_to = _extract_col_adj_values(soup, '(-ig)')
+        return {
+            Fields.AGREED_TIME_FROM: time_from.pop(),
+            Fields.AGREED_TIME_TO: time_to.pop(),
+        }
+    return {}
+
+
 def extract_title(soup, extracted_data):
     """
     Extract title from the mail
@@ -428,4 +439,23 @@ def clean_mt_id(processed_data):
     if Fields.MT_ID not in processed_data and \
             Fields.TICKET_ID in processed_data:
         return {Fields.MT_ID: processed_data[Fields.TICKET_ID]}
+    return {}
+
+
+def agreed_time_raw(processed_data):
+    raw_time = processed_data.get(Fields.AGREED_TIME_RAW)
+    if raw_time and re.search('^\d{4}.*', raw_time):
+        components = raw_time.split(' - ')
+        if len(components) == 2:
+            time_from, time_to = components
+        elif len(components) == 1:
+            time_from = components[0]
+            time_to = None
+        else:
+            raise Exception('Could not clean raw agreed time {}'
+                            ''.format(raw_time))
+        return {
+            Fields.AGREED_TIME_FROM: time_from,
+            Fields.AGREED_TIME_TO: time_to,
+        }
     return {}

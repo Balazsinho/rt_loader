@@ -32,7 +32,7 @@ USABLE_FIELDS = [
     ('WFMS jegy letrejotte', Fields.DATE_CREATED),
     ('Beerkezes datuma', Fields.DATE_CREATED),
     ('Igeny rogzites datuma', Fields.DATE_CREATED),
-    ('Egyeztetett idopont', Fields.AGREED_TIME),
+    ('Egyeztetett idopont', Fields.AGREED_TIME_RAW),
 
     ('Bejelentes tipusa', Fields.REQ_TYPE),
     ('Igeny tipus', Fields.REQ_TYPE),

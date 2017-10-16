@@ -18,12 +18,14 @@ class MailParser(object):
         postparsers.extract_task_nr,
         postparsers.extract_client_id,
         postparsers.extract_title,
+        postparsers.extract_agreed_time,
     )
 
     CLEANERS = (
         postparsers.clean_name,
         postparsers.clean_task_type,
         postparsers.clean_mt_id,
+        postparsers.agreed_time_raw,
     )
 
     def __init__(self, logger):
@@ -109,7 +111,11 @@ class MailParser(object):
         Calls the data cleaners on the already processed data - final step
         """
         for cleaner in self.CLEANERS:
-            data.update(cleaner(data))
+            try:
+                data.update(cleaner(data))
+            except Exception as e:
+                self.logger.warning('{} cleaner error: {}'
+                                    ''.format(cleaner.__name__, str(e)))
 
     def extract_kv_from_str(self, field):
         """
