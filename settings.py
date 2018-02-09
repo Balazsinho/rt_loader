@@ -19,41 +19,6 @@ REPORT_OUTPUT_DIR = os.path.join(PROJECT_DIR, 'reports')
 
 SCAN_DIR = os.path.join(PROJECT_DIR, 'files', 'scans')
 
-GYURI_DB = {
-    'server': 'SZERVER',
-    'port': '8778',
-    'user': 'Szerver\\SysRoot',
-    'pass': '100kurva',
-}
-
-ROVIDTAV_SERVER = '213.181.208.4'
-ROVIDTAV_AUTH = 'mailUploader:Upl04D'
-
-ACC_MUNKA = 'munka'
-ACC_INFO = 'info'
-ACC_LESZERELES = 'leszereles'
-
-EMAIL_ACCS = {
-    ACC_MUNKA: {
-        'host': 'mail.rovid-tav.hu',
-        'port': 110,
-        'user': 'munka@rovid-tav.hu',
-        'passwd': 'hu7EyieW',
-    },
-    ACC_INFO: {
-        'host': 'mail.rovid-tav.hu',
-        'port': 110,
-        'user': 'info@rovid-tav.hu',
-        'passwd': 'eiTa6wah',
-    },
-    ACC_LESZERELES: {
-        'host': 'mail.rovid-tav.hu',
-        'port': 110,
-        'user': 'furo.gyorgy@rovid-tav.hu',
-        'passwd': 'fg12345FG',
-    },
-}
-
 # =============================================================================
 # Loader configuration
 # =============================================================================

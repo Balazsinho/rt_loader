@@ -47,6 +47,8 @@ class TestMailParsing(unittest.TestCase):
         output = self.parser.parse(f)
         # PPrinter(indent=0).pprint(output)
         expected = {
+            'agreed_time_from': u'2016-08-05 14:00:00',
+            'agreed_time_to': u'2016-08-05 16:00:00',
             'addr1': u'1148 BUDAPEST Fogarasi út 57 FS em. 1 ajtó',
             'city': u'Budapest',
             'house_num': u'57 FS em 1 ajtó',
@@ -68,7 +70,9 @@ class TestMailParsing(unittest.TestCase):
         output = self.parser.parse(f)
         expected = {
             'addr1': u'FEGYVERNEK 5231 Háy Mihály út 36. /A',
-            'agreed_time': u'2016-05-12 17:00:00 - 2016-05-12 18:00:00',
+            'agreed_time_from': u'2016-05-12 17:00:00',
+            'agreed_time_raw': u'2016-05-12 17:00:00 - 2016-05-12 18:00:00',
+            'agreed_time_to': u'2016-05-12 18:00:00',
             'city': u'Fegyvernek',
             'date_created': u'2016-05-06 10:38:50',
             'devices': [
@@ -159,7 +163,7 @@ class TestMailParsing(unittest.TestCase):
         output = self.parser.parse(f)
         expected = {
             'addr1': u'HAJDÚSZOBOSZLÓ 4200 Hőforrás utca 27-33.',
-            'agreed_time': '',
+            'agreed_time_raw': '',
             'city': u'Hajdúszoboszló',
             'date_created': u'2014-01-30 07:25:05',
             'devices': [
@@ -187,7 +191,9 @@ class TestMailParsing(unittest.TestCase):
         expected = {
             'a_num': u'ktv8000192174',
             'addr1': u'2013 Pomáz Magyar utca 14 /B',
-            'agreed_time': u'2016-07-22 10:00:44 - 2016-07-22 12:00:44',
+            'agreed_time_from': u'2016-07-22 10:00:44',
+            'agreed_time_raw': u'2016-07-22 10:00:44 - 2016-07-22 12:00:44',
+            'agreed_time_to': u'2016-07-22 12:00:44',
             'city': u'Pomáz',
             'devices': [
                 {'device_sn': u'255865885',
@@ -251,7 +257,9 @@ class TestMailParsing(unittest.TestCase):
         output = self.parser.parse(f)
         expected = {
             'addr1': u'BUDAPEST 1136 Balzac utca 50/A. 2. emelet 2. ajtó',
-            'agreed_time': u'2016-08-02 14:00:00 - 2016-08-02 16:00:00',
+            'agreed_time_from': u'2016-08-02 14:00:00',
+            'agreed_time_raw': u'2016-08-02 14:00:00 - 2016-08-02 16:00:00',
+            'agreed_time_to': u'2016-08-02 16:00:00',
             'city': u'Budapest',
             'date_created': u'2016-07-28 18:37:30',
             'house_num': u'50/A 2 emelet 2 ajtó',
@@ -344,7 +352,9 @@ class TestMailParsing(unittest.TestCase):
         expected = {
             'a_num': u'ktv6605788774',
             'addr1': u'2013 Pomáz Vár utca 34',
-            'agreed_time': u'2016-07-22 12:00:00 - 2016-07-22 14:00:00',
+            'agreed_time_from': u'2016-07-22 12:00:00',
+            'agreed_time_to': u'2016-07-22 14:00:00',
+            'agreed_time_raw': u'2016-07-22 12:00:00 - 2016-07-22 14:00:00',
             'city': u'Pomáz',
             'devices': [
                 {'device_sn': u'254426669',
@@ -407,7 +417,9 @@ class TestMailParsing(unittest.TestCase):
         expected = {
             'a_num': '',
             'addr1': u'1184 BUDAPEST Lakatos út 65 -',
-            'agreed_time': u'2016-07-26 09:00:00 - 2016-07-26 12:00:00',
+            'agreed_time_from': u'2016-07-26 09:00:00',
+            'agreed_time_raw': u'2016-07-26 09:00:00 - 2016-07-26 12:00:00',
+            'agreed_time_to': u'2016-07-26 12:00:00',
             'city': u'Budapest',
             'house_num': u'65 -',
             'mt_id': u'459737363',
@@ -431,7 +443,9 @@ class TestMailParsing(unittest.TestCase):
         output = self.parser.parse(f)
         expected = {
             'addr1': u'NAGYKOVÁCSI 2094 Rákóczi utca 10.',
-            'agreed_time': u'2016-07-27 14:00:00 - 2016-07-27 16:00:00',
+            'agreed_time_from': u'2016-07-27 14:00:00',
+            'agreed_time_raw': u'2016-07-27 14:00:00 - 2016-07-27 16:00:00',
+            'agreed_time_to': u'2016-07-27 16:00:00',
             'city': u'Nagykovácsi',
             'date_created': u'2016-07-22 12:29:02',
             'house_num': u'10',
@@ -456,7 +470,9 @@ class TestMailParsing(unittest.TestCase):
         output = self.parser.parse(f)
         expected = {
             'addr1': u'SOLYMÁR 2083 Madár utca 2.',
-            'agreed_time': u'2016-07-28 12:00:00 - 2016-07-28 14:00:00',
+            'agreed_time_from': u'2016-07-28 12:00:00',
+            'agreed_time_raw': u'2016-07-28 12:00:00 - 2016-07-28 14:00:00',
+            'agreed_time_to': u'2016-07-28 14:00:00',
             'city': u'Solymár',
             'date_created': u'2016-07-25 14:54:27',
             'devices': [{'device_sn': u'00912033306224',
@@ -484,7 +500,9 @@ class TestMailParsing(unittest.TestCase):
         output = self.parser.parse(f)
         expected = {
             'addr1': u'REMETESZÕLÕS 2090 Csillag sétány 2.',
-            'agreed_time': u'2016-07-28 14:00:00 - 2016-07-28 16:00:00',
+            'agreed_time_from': u'2016-07-28 14:00:00',
+            'agreed_time_raw': u'2016-07-28 14:00:00 - 2016-07-28 16:00:00',
+            'agreed_time_to': u'2016-07-28 16:00:00',
             'city': u'Remeteszõlõs',
             'date_created': u'2016-07-27 12:01:11',
             'house_num': u'2',
@@ -509,7 +527,9 @@ class TestMailParsing(unittest.TestCase):
         output = self.parser.parse(f)
         expected = {
             'addr1': u'BUDAPEST 1132 Visegrádi utca 55-57. FS. emelet 2. ajtó',
-            'agreed_time': u'2016-08-01 14:00:00 - 2016-08-01 16:00:00',
+            'agreed_time_from': u'2016-08-01 14:00:00',
+            'agreed_time_raw': u'2016-08-01 14:00:00 - 2016-08-01 16:00:00',
+            'agreed_time_to': u'2016-08-01 16:00:00',
             'city': u'Budapest',
             'date_created': u'2016-07-26 14:32:55',
             'house_num': u'55-57 FS emelet 2 ajtó',
@@ -557,7 +577,9 @@ class TestMailParsing(unittest.TestCase):
         output = self.parser.parse(f)
         expected = {
             'addr1': u'BUDAPEST 1132 Visegrádi utca 58/B. FE. emelet 3. ajtó',
-            'agreed_time': u'2016-08-01 12:00:00 - 2016-08-01 14:00:00',
+            'agreed_time_from': u'2016-08-01 12:00:00',
+            'agreed_time_raw': u'2016-08-01 12:00:00 - 2016-08-01 14:00:00',
+            'agreed_time_to': u'2016-08-01 14:00:00',
             'city': u'Budapest',
             'date_created': u'2016-07-26 14:41:22',
             'house_num': u'58/B FE emelet 3 ajtó',
@@ -689,7 +711,9 @@ class TestMailParsing(unittest.TestCase):
         # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'NAGYKOVÁCSI 2094 Szent Flórián utca 5/B.',
-            'agreed_time': u'2016-09-03 10:00:00 - 2016-09-03 12:00:00',
+            'agreed_time_from': u'2016-09-03 10:00:00',
+            'agreed_time_raw': u'2016-09-03 10:00:00 - 2016-09-03 12:00:00',
+            'agreed_time_to': u'2016-09-03 12:00:00',
             'city': u'Nagykovácsi',
             'collectable_money': u'8000Ft',
             'date_created': u'2016-08-27 16:04:40',
@@ -718,6 +742,8 @@ class TestMailParsing(unittest.TestCase):
         # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'2000 SZENTENDRE Rózsa utca 16',
+            'agreed_time_from': u'2016-09-14 12:00:00',
+            'agreed_time_to': u'2016-09-14 14:00:00',
             'city': u'Szentendre',
             'house_num': u'16',
             'mt_id': u'706576846',
@@ -748,7 +774,9 @@ class TestMailParsing(unittest.TestCase):
         expected = {
             'addr1': (u'SZENTENDRE 2000 Széchenyi István tér 8. '
                       u'1. emelet 3. ajtó'),
-            'agreed_time': u'2016-09-14 08:00:00 - 2016-09-14 10:00:00',
+            'agreed_time_from': u'2016-09-14 08:00:00',
+            'agreed_time_raw': u'2016-09-14 08:00:00 - 2016-09-14 10:00:00',
+            'agreed_time_to': u'2016-09-14 10:00:00',
             'city': u'Szentendre',
             'collectable_money': u'8000Ft',
             'date_created': u'2016-09-10 10:43:21',
@@ -813,6 +841,8 @@ class TestMailParsing(unittest.TestCase):
         # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'1007 BUDAPEST Hajós Alfréd sétány 2',
+            'agreed_time_from': u'2016-09-22 10:57:11',
+            'agreed_time_to': u'2019-06-20 10:57:11',
             'city': u'Budapest',
             'devices': [{'device_sn': u'MENNY-17114619/1/1',
                          'device_type': u'3PLAY_HGW_1 Speedport Entry 2i'}],
@@ -837,7 +867,9 @@ class TestMailParsing(unittest.TestCase):
         # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'TÓSZEG 5091 Vadász utca 11.',
-            'agreed_time': u'2016-10-03 16:00:00 - 2016-10-03 18:00:00',
+            'agreed_time_from': u'2016-10-03 16:00:00',
+            'agreed_time_raw': u'2016-10-03 16:00:00 - 2016-10-03 18:00:00',
+            'agreed_time_to': u'2016-10-03 18:00:00',
             'city': u'Tószeg',
             'date_created': u'2016-10-01 22:58:46',
             'house_num': u'11',
@@ -863,7 +895,7 @@ class TestMailParsing(unittest.TestCase):
         # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'Tószeg 5091 Vadvirág 1/B.',
-            'agreed_time': u'Nincs, vagy lejárt!',
+            'agreed_time_raw': u'Nincs, vagy lej\xe1rt!',
             'city': u'Tószeg',
             'date_created': u'2016-09-12 14:42:28',
             'house_num': u'1/B',
@@ -893,6 +925,8 @@ class TestMailParsing(unittest.TestCase):
         # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'7630 PÉCS Deák Ferenc utca 37',
+            'agreed_time_from': u'2016-10-10 14:53:32',
+            'agreed_time_to': u'2019-10-10 16:53:00',
             'city': u'Pécs',
             'house_num': u'37',
             'mt_id': u'461998427',
@@ -1061,6 +1095,8 @@ class TestMailParsing(unittest.TestCase):
         # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'2000 SZENTENDRE Dózsa György út 67 FS em. 5 ajtó',
+            'agreed_time_from': u'2016-10-06 15:00:00',
+            'agreed_time_to': u'2016-10-06 16:00:00',
             'city': u'Szentendre',
             'devices': [{'device_sn': u'MENNY-16244276/1/1',
                          'device_type': u'3PLAY_STB_1 KISS STB_160GB'},
@@ -1088,6 +1124,8 @@ class TestMailParsing(unittest.TestCase):
         # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'7900 SZIGETVÁR Szabadság utca 43',
+            'agreed_time_from': u'2016-10-27 15:22:50',
+            'agreed_time_to': u'2019-07-25 15:22:50',
             'city': u'Szigetvár',
             'devices': [{'device_sn': u'252819612',
                          'device_type': u'3PLAY_STB_1 ISB6030_STB_HDD_320GB'},
@@ -1116,7 +1154,9 @@ class TestMailParsing(unittest.TestCase):
         # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'TÓSZEG 5091 Tópart út 2.',
-            'agreed_time': u'2016-11-07 08:00:00 - 2016-11-07 10:00:00',
+            'agreed_time_from': u'2016-11-07 08:00:00',
+            'agreed_time_raw': u'2016-11-07 08:00:00 - 2016-11-07 10:00:00',
+            'agreed_time_to': u'2016-11-07 10:00:00',
             'city': u'Tószeg',
             'date_created': u'2016-11-03 16:46:05',
             'devices': [
@@ -1159,7 +1199,9 @@ class TestMailParsing(unittest.TestCase):
         # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'TÓSZEG 5091 Széchenyi út 33.',
-            'agreed_time': u'2016-11-07 12:00:00 - 2016-11-07 14:00:00',
+            'agreed_time_from': u'2016-11-07 12:00:00',
+            'agreed_time_raw': u'2016-11-07 12:00:00 - 2016-11-07 14:00:00',
+            'agreed_time_to': u'2016-11-07 14:00:00',
             'city': u'Tószeg',
             'date_created': u'2016-11-04 08:18:21',
             'devices': [
@@ -1196,7 +1238,9 @@ class TestMailParsing(unittest.TestCase):
         # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'ÚJSZÁSZ 5052 Jókai út 16.',
-            'agreed_time': u'2016-11-07 15:00:00 - 2016-11-07 17:00:00',
+            'agreed_time_from': u'2016-11-07 15:00:00',
+            'agreed_time_raw': u'2016-11-07 15:00:00 - 2016-11-07 17:00:00',
+            'agreed_time_to': u'2016-11-07 17:00:00',
             'city': u'Újszász',
             'date_created': u'2016-11-03 09:20:05',
             'devices': [
@@ -1264,9 +1308,11 @@ class TestMailParsing(unittest.TestCase):
     def test_file44(self):
         f = self._get_mail_file('test44.html')
         output = self.parser.parse(f)
-        PPrinter(indent=0).pprint(output)
+        # PPrinter(indent=0).pprint(output)
         expected = {
             'addr1': u'5451 ÖCSÖD Ady Endre út 38',
+            'agreed_time_from': u'2017-02-23 08:00:00',
+            'agreed_time_to': u'2017-02-23 10:00:00',
             'city': u'Öcsöd',
             'house_num': u'38',
             'mt_id': u'123761256',
