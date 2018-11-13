@@ -349,6 +349,23 @@ def extract_agreed_time(soup, extracted_data):
     return {}
 
 
+def extract_extra_devices(soup, extracted_data):
+    """
+    Extracts the extra devices e.g. tablet, TV
+    test45
+    """
+    devices = []
+    for td in soup.find_all('td'):
+        if unidecode(td.text).strip().startswith('Eszkoz nev:'):
+            m = re.search(u'Eszköz név:(.*)\s*\-\s*Cikkszám:(.*)', td.text)
+            if m:
+                name, code = map(lambda x: x.strip(), m.groups())
+                devices.append({Fields.EXTRA_DEV_CODE: code,
+                                Fields.EXTRA_DEV_TYPE: name})
+
+    return {Fields.EXTRA_DEVICES: devices} if devices else {}
+
+
 def extract_title(soup, extracted_data):
     """
     Extract title from the mail

@@ -898,6 +898,8 @@ class TestMailParsing(unittest.TestCase):
             'agreed_time_raw': u'Nincs, vagy lej\xe1rt!',
             'city': u'Tószeg',
             'date_created': u'2016-09-12 14:42:28',
+            'extra_devices': [{'extra_dev_code': u'TV THO 32HA3103',
+                               'extra_dev_type': u'TV k\xe9sz\xfcl\xe9k'}],
             'house_num': u'1/B',
             'mt_id': u'825295282',
             'name1': u'Jakoda-Tóth Andrea',
@@ -1322,6 +1324,44 @@ class TestMailParsing(unittest.TestCase):
             'ticket_id': u'65965784-897',
             'title': u'Munkaelrendelés',
             'zip': u'5451'
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file45(self):
+        f = self._get_mail_file('test45.html')
+        output = self.parser.parse(f)
+        PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'SZEGED 6723 Olajos utca 8/A. 4. emelet 11. ajtó',
+            'agreed_time_from': u'2018-11-19 14:00:00',
+            'agreed_time_raw': u'2018-11-19 14:00:00 - 2018-11-19 16:00:00',
+            'agreed_time_to': u'2018-11-19 16:00:00',
+            'city': u'Szeged',
+            'date_created': u'2018-11-12 14:53:28',
+            'extra_devices': [
+                {
+                    'extra_dev_code': u'TV LG 50UK6300MLB',
+                    'extra_dev_type': u'TV k\xe9sz\xfcl\xe9k'
+                },
+                {
+                    'extra_dev_code': u'HUA MP T3 10 16GB #GRY',
+                    'extra_dev_type': u'T-Home tablet'
+                }
+            ],
+            'house_num': u'8/A 4 emelet 11 ajtó',
+            'mt_id': u'830626724',
+            'name1': u'Mezei Csaba József',
+            'order_num': u'2d373136383031303439353037353238',
+            'oss_id': u'830626724',
+            'phone1': u'+36306821666',
+            'phone2': u'62645079',
+            'req_type': u'Műszaki Hozzáférés - [FEL] - KOAX',
+            'street': u'Olajos utca',
+            'task_type': u'L-Helyszíni létesítés (KOAX) [SPA]',
+            'ticket_id': u'77650853-628',
+            'title': u'Szerelési lap',
+            'zip': u'6723'
         }
 
         self.assertDictEqual(output, expected)

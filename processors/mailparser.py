@@ -19,6 +19,7 @@ class MailParser(object):
         postparsers.extract_client_id,
         postparsers.extract_title,
         postparsers.extract_agreed_time,
+        postparsers.extract_extra_devices,
     )
 
     CLEANERS = (
