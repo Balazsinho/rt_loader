@@ -27,10 +27,12 @@ SCAN_DIR = os.path.join(PROJECT_DIR, 'files', 'scans')
 LESZERELES = 'Leszereles'
 NYILVANTARTO = 'Nyilvantarto'
 NEWDB = 'NewDb'
+NEWDBUNINST = 'NewDbUninst'
 
 # Config
 LOADERS = {
     'info': (NEWDB,),
+    'leszereles': (NEWDBUNINST,),
     'munka': (NEWDB,),
     'fileupload': (NEWDB,),
     'scan': (NEWDB,),
