@@ -12,6 +12,8 @@ from processors.field_map import Fields
 class NewDb(object):
 
     API_VERSION = 1
+    TICKET_ENDPOINT = 'ticket/create'
+    ATTACHMENT_ENDPOINT = 'ticket/attachment'
 
     def __init__(self, logger):
         self._logger = logger
@@ -44,7 +46,7 @@ class NewDb(object):
         data['html'] = mail.pretty
         data['mail_date'] = str(mail.mail_date)
         data['attachments'] = mail.attachments
-        result = self._do_request('ticket/create', data)
+        result = self._do_request(self.TICKET_ENDPOINT, data)
         if 'error' in result:
             if str(result['error']).startswith('duplicate ticket'):
                 raise DuplicateItemError(u'A {} jegy azonosító már bent van az'
@@ -56,7 +58,7 @@ class NewDb(object):
         return result
 
     def upload_attachment(self, data):
-        result = self._do_request('ticket/attachment', data)
+        result = self._do_request(self.ATTACHMENT_ENDPOINT, data)
         if 'error' in result:
             if str(result['error']).endswith('does not exist'):
                 raise MissingItemError(u'A {} jegy azonosító nem található'

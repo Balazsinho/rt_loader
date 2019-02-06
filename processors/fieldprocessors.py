@@ -213,10 +213,6 @@ def extract_device_params(soup, extracted_data):
         _extract_devices_method4(soup, extracted_data) or \
         {}
 
-    # Filter the cards out - we don't need them
-    devices = filter(
-        lambda dev: dev[Fields.DEV_SN][0:3] not in ('014', '020'), devices)
-
     devices = filter(
         lambda dev: not re.match('^\s*$', dev[Fields.DEV_SN]), devices)
 
@@ -234,10 +230,12 @@ def _extract_devices_method1(soup, extracted_data):
         device = {
             Fields.DEV_SN:
                 extracted_data['STB azonosito nyilvantartas szerint'],
-            Fields.DEV_CARD_SN:
-                extracted_data['Kartya azonosito nyilvantartas szerint'],
         }
         devices.append(device)
+        card = extracted_data['Kartya azonosito nyilvantartas szerint']
+        if card:
+            devices.append({Fields.DEV_SN: card,
+                            Fields.DEV_TYPE: 'CONAX SMART CARD'})
 
     return devices
 
@@ -255,12 +253,17 @@ def _extract_devices_method2(soup, extracted_data):
         'Eszkoz igenybevetel': Fields.DEV_OWNERSHIP,
     }
 
+    def is_card(device):
+        return Fields.DEV_SN in device and \
+            'CARD' in device.get(Fields.DEV_TYPE)
+
     def get_field(for_key):
         for key in KEY_MAP:
             if key in unidecode(for_key):
                 return KEY_MAP[key]
 
     devices = []
+    cards = []
 
     for td in soup.find_all('td'):
         if td.find('td'):
@@ -272,7 +275,9 @@ def _extract_devices_method2(soup, extracted_data):
             for idx, curr_field in enumerate(data):
                 field = get_field(curr_field)
                 if field and field in device:
-                    if Fields.DEV_SN in device:
+                    if is_card(device):
+                        cards.append(device)
+                    elif Fields.DEV_SN in device:
                         devices.append(device)
                     device = {}
                 if field:
@@ -284,11 +289,27 @@ def _extract_devices_method2(soup, extracted_data):
                         value = None
                     if value:
                         device[field] = value.strip()
+                if field == Fields.DEV_TYPE:
+                    elements = data[idx].split(')')
+                    if len(elements) == 2:
+                        device[Fields.DEV_ACTION] = elements[0].strip().strip('(')
 
+            if is_card(device):
+                cards.append(device)
             if Fields.DEV_SN in device:
                 devices.append(device)
 
-    return devices
+    #while cards:
+    #    card = cards.pop()
+    #    for device in devices:
+    #        if Fields.DEV_CARD_SN not in device and \
+    #                card.get(Fields.DEV_ACTION) == device.get(Fields.DEV_ACTION):
+    #            card_sn = card[Fields.DEV_SN]
+    #            if card_sn:
+    #                device[Fields.DEV_CARD_SN] = card_sn
+    #            break
+
+    return devices + cards
 
 
 def _extract_devices_method3(soup, extracted_data):
