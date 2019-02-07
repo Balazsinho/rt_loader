@@ -19,7 +19,7 @@ class LeszerelesLoader(EmailLoaderBase):
 
     def pre_run(self):
         super(LeszerelesLoader, self).pre_run()
-        self.email_acc = settings.ACC_LESZERELES_OLD
+        self.email_acc = settings.ACC_LESZERELES
         self.downloader = Downloader(self.logger)
         self.parser = MailParser(self.logger)
         self.dataloaders = []
