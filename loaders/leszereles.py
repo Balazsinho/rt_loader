@@ -27,3 +27,9 @@ class LeszerelesLoader(EmailLoaderBase):
             loader_module = __import__('dataloader')
             cls = getattr(loader_module, loader_cls_name)
             self.dataloaders.append(cls(self.logger))
+
+    def _notproc(self, mail):
+        """x
+        Fork for handling not processable emails
+        """
+        self._duplicates += 1
