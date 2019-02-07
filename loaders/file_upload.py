@@ -5,7 +5,8 @@ from downloader.fileloader import FileLoader
 from processors.mailparser import MailParser
 from dataloader.nyilvantarto import Nyilvantarto  # @UnusedImport
 from dataloader.leszereles import Leszereles  # @UnusedImport
-from dataloader.new_db import NewDb  # @UnusedImport
+from dataloader.new_db import NewDb  # @UnusedImporT
+from dataloader.new_db_uninst import NewDbUninst  # @UnusedImporT
 
 from munka import MunkaLoader
 

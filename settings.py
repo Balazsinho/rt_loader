@@ -34,7 +34,7 @@ LOADERS = {
     'info': (NEWDB,),
     'leszereles': (NEWDBUNINST,),
     'munka': (NEWDB,),
-    'fileupload': (NEWDB,),
+    'fileupload': (NEWDBUNINST,),
     'scan': (NEWDB,),
 }
 
