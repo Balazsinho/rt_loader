@@ -29,7 +29,7 @@ class LeszerelesLoader(EmailLoaderBase):
             self.dataloaders.append(cls(self.logger))
 
     def _notproc(self, mail):
-        """x
-        Fork for handling not processable emails
-        """
+        self._duplicates += 1
+
+    def _error(self, mail):
         self._duplicates += 1

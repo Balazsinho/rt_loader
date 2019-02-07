@@ -49,7 +49,7 @@ class EmailLoaderBase(LoaderBase):
         except Exception as e:
             raise LoaderException(u'Email lekérdezés sikertelen: {}'.format(e))
 
-        error_count = 0
+        self.error_count = 0
         for mail in new_mails:
             try:
                 if self._filter(mail):
@@ -106,7 +106,6 @@ class EmailLoaderBase(LoaderBase):
                 if mail.status == mail.OK:
                     self._success(mail)
                 elif mail.status == mail.ERROR:
-                    error_count += 1
                     self._error(mail)
                 elif mail.status == mail.NOTPROC:
                     self._notproc(mail)
@@ -114,11 +113,11 @@ class EmailLoaderBase(LoaderBase):
                     self._duplicate(mail)
 
         self.logger.info(u'--- Email feldolgozás kész {} hibaval ---'
-                         u''.format(error_count))
+                         u''.format(self.error_count))
 
         self._post_process(new_mails)
 
-        if error_count > 0:
+        if self.error_count > 0:
             raise ErrorsDuringProcess()
 
     def _filter_attachments(self, mail):
@@ -140,6 +139,7 @@ class EmailLoaderBase(LoaderBase):
         """
         Fork for handling errors during email processing
         """
+        self.error_count += 1
         super(EmailLoaderBase, self)._error(mail)
         self._write(mail)
 
