@@ -87,7 +87,7 @@ class Mail(object):
         """
         att_name = msg['Content-ID']
         if not att_name:
-            m = re.search('name=(.*)', msg['Content-Type'], re.I)
+            m = re.search('name=(.*)', msg['Content-Type'] or '', re.I)
             if m:
                 att_name = m.group(1)
             else:
