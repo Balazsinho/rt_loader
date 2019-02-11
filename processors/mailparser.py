@@ -82,7 +82,7 @@ class MailParser(object):
         processed_data = {}
         for k, v in extracted_data.iteritems():
             if field_map.is_field_usable(k):
-                if k in field_map.FINAL_FIELDS or k not in processed_data:
+                if k in field_map.FINAL_FIELDS or k not in processed_data and v:
                     processed_data[field_map.mapped_field(k)] = v
             else:
                 self.logger.debug(u'Mező nem ismert - KULCS: {} - ÉRTÉK: {}'

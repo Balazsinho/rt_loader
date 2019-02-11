@@ -67,6 +67,7 @@ USABLE_FIELDS = [
     ('Kapcsolattarto', Fields.PHONE1),
     ('Kapcsolattarto telefon', Fields.PHONE1),
     ('Ertesitesi telefon', Fields.PHONE1),
+    ('Ertesitesi telefon (Otthoni)', Fields.PHONE2),
     ('Telefonszam', Fields.PHONE2),
 
     ('MT ugyfel-azonosito', Fields.MT_ID),

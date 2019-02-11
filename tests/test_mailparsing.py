@@ -183,7 +183,6 @@ class TestMailParsing(unittest.TestCase):
         output = self.parser.parse(f)
         expected = {
             'addr1': u'HAJDÚSZOBOSZLÓ 4200 Hőforrás utca 27-33.',
-            'agreed_time_raw': '',
             'city': u'Hajdúszoboszló',
             'date_created': u'2014-01-30 07:25:05',
             'devices': [
@@ -191,7 +190,6 @@ class TestMailParsing(unittest.TestCase):
                 {'device_sn': u'014786985714',
                  'device_type': u'CONAX SMART CARD'}
             ],
-            'efp_num': '',
             'house_num': u'27-33',
             'ki_id': u'1156290',
             'mt_id': u'888888888',
@@ -327,7 +325,6 @@ class TestMailParsing(unittest.TestCase):
         f = self._get_mail_file('test10.html')
         output = self.parser.parse(f)
         expected = {
-            'a_num': '',
             'addr1': u'2011 BUDAKALÁSZ Kökény utca 3234 HRSZ3234',
             'city': u'Budakalász',
             'house_num': u'3234 HRSZ3234',
@@ -436,7 +433,6 @@ class TestMailParsing(unittest.TestCase):
         f = self._get_mail_file('test14.html')
         output = self.parser.parse(f)
         expected = {
-            'a_num': '',
             'addr1': u'1184 BUDAPEST Lakatos út 65 -',
             'agreed_time_from': u'2016-07-26 09:00:00',
             'agreed_time_raw': u'2016-07-26 09:00:00 - 2016-07-26 12:00:00',
@@ -560,7 +556,7 @@ class TestMailParsing(unittest.TestCase):
             'order_num': u'37373934373932363036373332383433',
             'oss_id': u'468104124',
             'phone1': u'+36301237896',
-            'phone2': u'13492370',
+            'phone2': u'+3613492370',
             'req_type': u'Mûszaki Hozzáférés - [LESZ] - TPV_REZ',
             'street': u'Visegrádi utca',
             'task_type': (u'L-Vonalépítés - Multiservice Point '
@@ -838,7 +834,6 @@ class TestMailParsing(unittest.TestCase):
         output = self.parser.parse(f)
         # PPrinter(indent=0).pprint(output)
         expected = {
-            'a_num': '',
             'addr1': u'5000 SZOLNOK Vízpart körút 82 -',
             'city': u'Szolnok',
             'devices': [
@@ -1437,6 +1432,39 @@ class TestMailParsing(unittest.TestCase):
             'ticket_id': u'77650853-628',
             'title': u'Szerelési lap',
             'zip': u'6723'
+        }
+
+        self.assertDictEqual(output, expected)
+
+    def test_file46(self):
+        f = self._get_mail_file('test46.html')
+        output = self.parser.parse(f)
+        PPrinter(indent=0).pprint(output)
+        expected = {
+            'addr1': u'BUDAPEST 1201 Nagysándor József utca 34.',
+            'agreed_time_raw': u'Nincs, vagy lejárt!',
+            'city': u'Budapest',
+            'date_created': u'2019-01-22 19:15:40',
+            'devices': [{'device_action': u'Leszerelendő',
+                       'device_ownership': u'Bérelt',
+                       'device_sn': u'254628911',
+                       'device_type': u'ISB2201_STB'},
+                       {'device_action': u'Leszerelendő',
+                       'device_ownership': u'Bérelt',
+                       'device_sn': u'QBVP1D9006690',
+                       'device_type': u'Koax Dual 3.0 D-Link DCM-704B4'}],
+            'house_num': u'34',
+            'mt_id': u'726113441',
+            'name1': u'Kerti Tamás',
+            'order_num': u'2d323330303235393138303837353939',
+            'oss_id': u'726113441',
+            'phone2': u'+3613576657',
+            'req_type': u'Műszaki Hozzáférés - [LESZ] - KOAX',
+            'street': u'Nagysándor József utca',
+            'task_type': u'L-Kiemelt eszköz helyszíni begyűjtése (KOAX) (LHO) [SPA]',
+            'ticket_id': u'79229377-339',
+            'title': u'Szerelési lap',
+            'zip': u'1201'
         }
 
         self.assertDictEqual(output, expected)
