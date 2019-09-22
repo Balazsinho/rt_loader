@@ -9,6 +9,7 @@ import email.utils
 from datetime import datetime
 
 from bs4 import BeautifulSoup
+from HTMLParser import HTMLParseError
 
 
 class Mail(object):
@@ -38,8 +39,11 @@ class Mail(object):
 
         self.content = pl
         self.html = pl if self._validate_html(pl) else None
-        self.soup = BeautifulSoup(self.html, 'html.parser') if self.html \
-            else None
+        try:
+            self.soup = BeautifulSoup(self.html, 'html.parser') if self.html \
+                else None
+        except HTMLParseError:
+            self.soup = None
 
     def _validate_html(self, html):
         return '<html' in html
