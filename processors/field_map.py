@@ -77,6 +77,7 @@ USABLE_FIELDS = [
     ('MT ID', Fields.MT_ID),
     ('MT_ID', Fields.MT_ID),
     ('MT-azonosito', Fields.MT_ID),
+    ('Flip ugyfelazonosito', Fields.MT_ID)
 ]
 
 
