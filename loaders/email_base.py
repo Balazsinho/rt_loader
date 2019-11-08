@@ -133,7 +133,7 @@ class EmailLoaderBase(LoaderBase):
         Fork for handling successful emails
         """
         super(EmailLoaderBase, self)._success(mail)
-        self._write(mail)
+        # self._write(mail)
 
     def _error(self, mail):
         """
