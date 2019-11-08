@@ -4,7 +4,6 @@ import random
 import string
 import re
 import time
-import email
 import email.utils
 from datetime import datetime
 

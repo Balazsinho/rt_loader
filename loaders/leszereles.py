@@ -17,6 +17,10 @@ class LeszerelesLoader(EmailLoaderBase):
     from the inbox folder.
     """
 
+    def __init__(self, *args, **kwargs):
+        EmailLoaderBase.__init__(self, *args, **kwargs)
+        self._marked_to_del_idxs = []
+
     def pre_run(self):
         super(LeszerelesLoader, self).pre_run()
         self.email_acc = settings.ACC_LESZERELES
@@ -33,3 +37,10 @@ class LeszerelesLoader(EmailLoaderBase):
 
     def _error(self, mail):
         self._duplicates += 1
+
+    def _success(self, mail):
+        super(LeszerelesLoader, self)._success(mail)
+        self._marked_to_del_idxs.append(mail.idx)
+
+    def _post_process(self, *args):
+        self.downloader.delete_mails(self.email_acc, self._marked_to_del_idxs)
