@@ -32,6 +32,10 @@ class LeszerelesLoader(EmailLoaderBase):
             cls = getattr(loader_module, loader_cls_name)
             self.dataloaders.append(cls(self.logger))
 
+    def _duplicate(self, mail):
+        EmailLoaderBase._duplicate(self, mail)
+        self._marked_to_del_idxs.append(mail.idx)
+
     def _notproc(self, mail):
         self._duplicates += 1
 
