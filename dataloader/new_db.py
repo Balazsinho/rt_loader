@@ -23,9 +23,9 @@ class NewDb(object):
         Returns an authenticated request object for the desired endpoint
         """
 
-        url = 'http://{}/api/v{}/{}'.format(settings.ROVIDTAV_SERVER,
-                                            self.API_VERSION,
-                                            endpoint)
+        url = '{}/api/v{}/{}'.format(settings.ROVIDTAV_SERVER,
+                                     self.API_VERSION,
+                                     endpoint)
         auth = base64.encodestring(settings.ROVIDTAV_AUTH).strip()
         auth_header = 'Basic {}'.format(auth)
 
