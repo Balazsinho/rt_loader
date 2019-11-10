@@ -8,7 +8,7 @@ import settings
 from downloader.mail import Mail
 from dataloader.base import DuplicateItemError
 from loaders.base import (LoaderBase, NotProcessableEmailError,
-                          LoaderException, ErrorsDuringProcess)
+                          LoaderException, ErrorsDuringProcess, StopException)
 
 
 class EmailLoaderBase(LoaderBase):
@@ -102,20 +102,27 @@ class EmailLoaderBase(LoaderBase):
             # =================================================================
             # Write the email into the appropriate directory
             # =================================================================
-            if not self._args.dry_run:
-                if mail.status == mail.OK:
-                    self._success(mail)
-                elif mail.status == mail.ERROR:
-                    self._error(mail)
-                elif mail.status == mail.NOTPROC:
-                    self._notproc(mail)
-                elif mail.status == mail.DUPLICATE:
-                    self._duplicate(mail)
+            try:
+                if not self._args.dry_run:
+                    if mail.status == mail.OK:
+                        self._success(mail)
+                    elif mail.status == mail.ERROR:
+                        self._error(mail)
+                    elif mail.status == mail.NOTPROC:
+                        self._notproc(mail)
+                    elif mail.status == mail.DUPLICATE:
+                        self._duplicate(mail)
+            except StopException as e:
+                self._post_process(new_mails)
+                self.logger.info(u'--- Email feldolgozás kész {} hibaval ---'
+                                 u''.format(self.error_count))
+
+                if self.error_count > 0:
+                    raise ErrorsDuringProcess()
+                raise e
 
         self.logger.info(u'--- Email feldolgozás kész {} hibaval ---'
                          u''.format(self.error_count))
-
-        self._post_process(new_mails)
 
         if self.error_count > 0:
             raise ErrorsDuringProcess()

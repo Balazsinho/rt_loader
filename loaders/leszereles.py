@@ -7,6 +7,7 @@ from processors.mailparser import MailParser
 from email_base import EmailLoaderBase
 
 from settings import LOADERS
+from loaders.base import StopException
 
 
 class LeszerelesLoader(EmailLoaderBase):
@@ -38,9 +39,13 @@ class LeszerelesLoader(EmailLoaderBase):
 
     def _notproc(self, mail):
         self._duplicates += 1
+        if self._duplicates > self._args.duplicates:
+            raise StopException('Duplikaciok miatt leall')
 
     def _error(self, mail):
         self._duplicates += 1
+        if self._duplicates > self._args.duplicates:
+            raise StopException('Duplikaciok miatt leall')
 
     def _success(self, mail):
         super(LeszerelesLoader, self)._success(mail)
