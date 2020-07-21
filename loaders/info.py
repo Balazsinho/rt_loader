@@ -23,7 +23,9 @@ class InfoLoader(EmailLoaderBase):
             self.dataloaders.append(cls(self.logger))
 
     def _filter(self, mail):
-        if 'wfms_eventus@telekom.hu' not in mail.mail_from:
+        from_wfms = 'wfms_eventus@telekom.hu' in mail.mail_from
+        wfms_ticket = 'WFMS_Munkaelrendel' in mail.mail_subject
+        if not from_wfms and not wfms_ticket:
             self.logger.debug('Mail skipped from: {}'
                               ''.format(mail.mail_from))
             return True

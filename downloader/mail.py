@@ -7,6 +7,7 @@ import time
 import email.utils
 from datetime import datetime
 
+import quopri
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParseError
 
@@ -34,6 +35,15 @@ class Mail(object):
             self.attachments = {}
         else:
             pl = payload[0].get_payload()
+            if isinstance(pl, list):
+                headers = dict(pl[-1]._headers)
+                if headers.get('Content-Transfer-Encoding') == 'quoted-printable':
+                    charset = headers.get('Content-Type', 'utf-8') \
+                        .split('charset=')[-1].strip('"')
+                    pl = quopri.decodestring(pl[-1].get_payload()) \
+                        .decode(charset)
+                else:
+                    pl = pl[-1].get_payload()
             self.attachments = self._parse_attachments()
 
         self.content = pl
@@ -55,6 +65,10 @@ class Mail(object):
     @property
     def mail_from(self):
         return self.mail['From'] or self.mail['from']
+
+    @property
+    def mail_subject(self):
+        return self.mail['Subject'] or self.mail['subject']
 
     @property
     def mail_date(self):
