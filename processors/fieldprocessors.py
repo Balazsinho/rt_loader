@@ -378,7 +378,7 @@ def extract_extra_devices(soup, extracted_data):
     devices = []
     for td in soup.find_all('td'):
         if unidecode(td.text).strip().startswith('Eszkoz nev:'):
-            m = re.search(u'Eszköz név:(.*)\s*\-\s*Cikkszám:(.*)', td.text )
+            m = re.search(u'Eszköz név:(.*)\s*\-\s*Cikkszám:(.*)', td.text)
             if m:
                 name, code = map(lambda x: x.strip(), m.groups())
                 devices.append({Fields.EXTRA_DEV_CODE: code,
