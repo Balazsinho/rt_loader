@@ -166,6 +166,6 @@ class EmailLoaderBase(LoaderBase):
         try:
             with codecs.open(filename, 'w', 'utf-8') as mail_file:
                 mail_file.write(mail.pretty)
-                self.logger.info(u'File kiírva: {}'.format(mail_file.name))
+                self.logger.info(u'File kiírva: {}'.format(filename))
         except Exception as e:
-            self.logger.error(u'Sikertelen: {} - {}'.format(mail_file.name, e))
+            self.logger.error(u'Sikertelen: {} - {}'.format(filename, e))
