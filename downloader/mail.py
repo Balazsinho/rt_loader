@@ -47,7 +47,7 @@ class Mail(object):
                 except LookupError:
                     pl = quopri.decodestring(pl.get_payload())
             else:
-                raise Exception('Unknown payload: {}'.format(payload))
+                pl = payload[0].get_payload()
             self.attachments = self._parse_attachments()
 
         self.content = pl
