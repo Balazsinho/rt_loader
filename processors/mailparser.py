@@ -27,6 +27,7 @@ class MailParser(object):
         postparsers.clean_task_type,
         postparsers.clean_mt_id,
         postparsers.agreed_time_raw,
+        postparsers.clean_phones,
     )
 
     def __init__(self, logger):

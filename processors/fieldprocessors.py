@@ -4,6 +4,7 @@ import re
 from unidecode import unidecode
 
 from field_const import Fields
+from buildtools import process
 
 
 # =============================================================================
@@ -449,6 +450,16 @@ def clean_name(processed_data):
     if 'ERROR' in name1 and name2 is not None:
         result = {Fields.NAME1: name2}
     return result
+
+
+def clean_phones(processed_data):
+    phone1 = processed_data.get(Fields.PHONE1, '')
+    phone2 = processed_data.get(Fields.PHONE2, '')
+    if phone1 and not re.match('[\+\d,\s]+', phone1):
+        del processed_data[Fields.PHONE1]
+    if phone2 and not re.match('[\+\d,\s]+', phone2):
+        del processed_data[Fields.PHONE2]
+    return {}
 
 
 def clean_task_type(processed_data):
