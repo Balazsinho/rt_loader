@@ -29,12 +29,11 @@ class EmailLoaderBase(LoaderBase):
         pass
 
     def _extract(self, mail):
-        self.logger.info(u'--- Feldolgozás alatt: {}'
-                         u''.format(mail.filename))
-
         if not mail.html:
             raise NotProcessableEmailError(u'Nem feldolgozható email: '
                                            u'{}'.format(mail.filename))
+        self.logger.info(u'--- Feldolgozás alatt: {}'
+                         u''.format(mail.filename))
         if not self._args.raw:
             extracted_data = self.parser.parse(mail.html)
         else:
@@ -98,7 +97,8 @@ class EmailLoaderBase(LoaderBase):
                 self.logger.info(u'*** Következő rekord')
                 continue
 
-            self.logger.info(u'{}'.format(mail.status))
+            if mail.status != mail.NOTPROC:
+                self.logger.info(u'{}'.format(mail.status))
             # =================================================================
             # Write the email into the appropriate directory
             # =================================================================
