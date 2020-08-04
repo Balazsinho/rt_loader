@@ -36,18 +36,20 @@ class Mail(object):
         elif isinstance(payload, list):
             for pl in payload:
                 headers = dict(pl._headers)
-                if 'text/html' in headers.get('Content-Type', ''):
+                if isinstance(pl._payload, list):
+                    pl = pl._payload[-1].get_payload()
+                else:
+                    pl = pl.get_payload()
+                if 'text/html' in headers.get('Content-Type', '') \
+                        or self._validate_html(pl):
                     break
             if headers.get('Content-Transfer-Encoding') == 'quoted-printable':
                 charset = headers.get('Content-Type', 'utf-8') \
                     .split('charset=')[-1].strip('"')
                 try:
-                    pl = quopri.decodestring(pl.get_payload()) \
-                        .decode(charset)
+                    pl = quopri.decodestring(pl).decode(charset)
                 except LookupError:
-                    pl = quopri.decodestring(pl.get_payload())
-            else:
-                pl = pl.get_payload()
+                    pl = quopri.decodestring(pl)
             self.attachments = self._parse_attachments()
 
         self.content = pl
