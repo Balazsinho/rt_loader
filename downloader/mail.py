@@ -35,10 +35,11 @@ class Mail(object):
             self.attachments = {}
         elif isinstance(payload, list):
             for pl in payload:
-                headers = dict(pl._headers)
                 if isinstance(pl._payload, list):
+                    headers = dict(pl._payload[-1]._headers)
                     pl = pl._payload[-1].get_payload()
                 else:
+                    headers = dict(pl._headers)
                     pl = pl.get_payload()
                 if 'text/html' in headers.get('Content-Type', '') \
                         or self._validate_html(pl):
