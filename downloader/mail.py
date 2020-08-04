@@ -33,17 +33,18 @@ class Mail(object):
         if type(payload) in (str, unicode):
             pl = payload
             self.attachments = {}
-        else:
-            pl = payload[0].get_payload()
-            if isinstance(pl, list):
-                headers = dict(pl[-1]._headers)
-                if headers.get('Content-Transfer-Encoding') == 'quoted-printable':
-                    charset = headers.get('Content-Type', 'utf-8') \
-                        .split('charset=')[-1].strip('"')
-                    pl = quopri.decodestring(pl[-1].get_payload()) \
-                        .decode(charset)
-                else:
-                    pl = pl[-1].get_payload()
+        elif isinstance(payload, list):
+            for pl in payload:
+                headers = dict(pl._headers)
+                if 'text/html' in headers.get('Content-Type'):
+                    break
+            if headers.get('Content-Transfer-Encoding') == 'quoted-printable':
+                charset = headers.get('Content-Type', 'utf-8') \
+                    .split('charset=')[-1].strip('"')
+                pl = quopri.decodestring(pl.get_payload()) \
+                    .decode(charset)
+            else:
+                raise Exception('Unknown payload: {}'.format(payload))
             self.attachments = self._parse_attachments()
 
         self.content = pl
@@ -55,7 +56,7 @@ class Mail(object):
             self.soup = None
 
     def _validate_html(self, html):
-        return '<html' in html
+        return '<div' in html
 
     @property
     def pretty(self):
