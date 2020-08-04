@@ -41,8 +41,11 @@ class Mail(object):
             if headers.get('Content-Transfer-Encoding') == 'quoted-printable':
                 charset = headers.get('Content-Type', 'utf-8') \
                     .split('charset=')[-1].strip('"')
-                pl = quopri.decodestring(pl.get_payload()) \
-                    .decode(charset)
+                try:
+                    pl = quopri.decodestring(pl.get_payload()) \
+                        .decode(charset)
+                except LookupError:
+                    pl = quopri.decodestring(pl.get_payload())
             else:
                 raise Exception('Unknown payload: {}'.format(payload))
             self.attachments = self._parse_attachments()
