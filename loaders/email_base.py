@@ -59,7 +59,7 @@ class EmailLoaderBase(LoaderBase):
                 mail.attachments = self._filter_attachments(mail)
 
             except NotProcessableEmailError as e:
-                self.logger.warning(u'{}'.format(e))
+                # self.logger.warning(u'{}'.format(e))
                 mail.status = mail.NOTPROC
 
             except Exception as e:
@@ -155,7 +155,7 @@ class EmailLoaderBase(LoaderBase):
         Fork for handling not processable emails
         """
         super(EmailLoaderBase, self)._notproc(mail)
-        self._write(mail)
+        # self._write(mail)
 
     def _write(self, mail):
         """
